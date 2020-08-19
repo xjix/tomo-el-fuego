@@ -1,3 +1,13 @@
+# tomo el fuego
+
+[tomo el fuego][tomo] is a 9family operating system derived from a series of
+labs which had the aim of porting the system to a raspberry pi. tomo continues
+the tradition of blending os research and educational resources together.
+
+[tomo]: khttps://sunshinegardens.org/~xj9/tomo/
+
+## origins
+
 This is compilation of Labs completed by LynxLine (http://lynxline.com/projects/labs-portintg-inferno-os-to-raspberry-pi/) into the source code repository.
 
 We started a small and exciting project just for fun as “Porting Inferno OS to Raspberry Pi”. Of course we would like to run it there as native, not hosted. It was always declared that this OS is very simple for porting to new platforms, so let’s just research this and reach new distilled experiences of system programming. Also this OS is very small, simple and easy to tweak for research purposes.
