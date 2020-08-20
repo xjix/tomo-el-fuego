@@ -1,0 +1,22 @@
+i dedicate any and all copyright interest in this software to the public domain. i make this dedication for the benefit of the public at large and to the detriment of my heirs and successors. i intend this dedication to be an overt act of relinquishment in perpetuity of all present and future rights to this software under copyright law.
+
+to the best of my knowledge and belief, my contributions are either originally authored by me or are derived from prior works which I have verified are also in the public domain and are not subject to claims of copyright by other parties.
+
+to the best of my knowledge and belief, no individual, business, organization, government, or other entity has any copyright interest in my contributions, and i affirm that i will not make contributions that are otherwise encumbered.
+
+i will do no harm.
+
+if harm cannot be avoided, i will act honorably towards my fellow beings.
+
+i will be kind, keep these gates in mind: 1. is it true? 2. is it necessary? 3. is it kind?
+
+i will tend to the orderly complexity of the whole
+
+i will immanentize the eschaton
+
+i hearby swear
+
+```
+gpg -o - --no-version --armor --sign OATH >> AUTHORS
+```
+
