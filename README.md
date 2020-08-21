@@ -4,7 +4,7 @@
 labs which had the aim of porting the system to a raspberry pi. tomo continues
 the tradition of blending os research and educational resources together.
 
-[tomo]: khttps://sunshinegardens.org/~xj9/tomo/
+[tomo]: https://sunshinegardens.org/~xj9/tomo/
 
 ## origins
 
