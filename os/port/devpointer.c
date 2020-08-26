@@ -17,6 +17,7 @@
 enum{
 	Qdir,
 	Qpointer,
+	QpointerIn,
 	Qcursor,
 };
 
@@ -42,7 +43,8 @@ static struct
 static
 Dirtab pointertab[]={
 	".",			{Qdir, 0, QTDIR},	0,	0555,
-	"pointer",		{Qpointer},	0,	0666,
+	"pointer",		{Qpointer},	0,	0444,
+	"pointerin",		{QpointerIn},	0,	0222,
 	"cursor",		{Qcursor},		0,	0222,
 };
 
@@ -236,11 +238,12 @@ pointerwrite(Chan* c, void* va, long n, vlong)
 	int b, x, y;
 
 	switch((ulong)c->qid.path){
-	case Qpointer:
+	case QpointerIn:
 		if(n > sizeof buf-1)
 			n = sizeof buf -1;
 		memmove(buf, va, n);
 		buf[n] = 0;
+
 		x = strtoul(buf+1, &a, 0);
 		if(*a == 0)
 			error(Eshort);

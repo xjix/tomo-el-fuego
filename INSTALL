@@ -60,7 +60,9 @@ following in the root of the Inferno tree:
 1    Edit    mkconfig  to  reflect  your  host  environment,
      specifically  ROOT  (which  must  be  an  absolute path
      name), SYSHOST and OBJTYPE.  The comments in  the  file
-     should help you choose.
+     should help you choose. Alternatively, you can set
+     environment variables on the command line such as:
+     iroot=`pwd` syshost=Linux objtype=386 ./makemk.sh
 
 2    Run  makemk.sh to rebuild the   mk  command,  which  is
      used to build everything else.
