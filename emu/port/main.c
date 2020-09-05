@@ -10,8 +10,12 @@ int		rebootargc = 0;
 char**		rebootargv;
 static	char	*imod = "/dis/emuinit.dis";
 extern	char*	hosttype;
+#ifndef tkfont
 char*	tkfont;	/* for libtk/utils.c */
+#endif
+#ifndef tkstylus
 int	tkstylus;	/* libinterp/tk.c */
+#endif
 extern	int	mflag;
 	int	dflag;
 	int vflag;

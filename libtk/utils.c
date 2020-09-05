@@ -54,7 +54,10 @@ static struct Cmd cmdmain[] =
 	"winfo",	tkwinfo,
 };
 
+#ifndef tkfont
+// also declared in emu/port/main.c
 char*	tkfont;
+#endif
 
 /*
  * auto-repeating support
