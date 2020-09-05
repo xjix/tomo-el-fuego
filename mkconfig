@@ -5,7 +5,7 @@
 
 #	On Nt systems, the ROOT path MUST be of the form `drive:/path'
 #	install path or source path?
-ROOT=$iroot
+ROOT=$HOME/src/tomo
 
 #
 #	Specify the flavour of Tk (std for standard builds)
