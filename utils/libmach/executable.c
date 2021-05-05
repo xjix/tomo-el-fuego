@@ -17,7 +17,7 @@ typedef struct {
 			uvlong hdr[1];
 		} exechdr64;
 		Ehdr elfhdr32;			/* elf.h */
-		struct mipsexec mips;	/* bootexec.h */
+		struct mipsexec mips32;	/* bootexec.h */
 		struct mips4kexec mips4k;	/* bootexec.h */
 		struct sparcexec sparc;	/* bootexec.h */
 		struct nextexec next;	/* bootexec.h */
@@ -65,6 +65,8 @@ extern	Mach	mamd64;
 extern	Mach	marm;
 extern	Mach	mpower;
 extern	Mach	mpower64;
+extern	Mach	mriscv;
+extern	Mach	mriscv64;
 
 ExecTable exectab[] =
 {
@@ -203,6 +205,24 @@ ExecTable exectab[] =
 		sizeof(Exec),
 		leswal,
 		armdotout },
+	{ Z_MAGIC,			/* riscv i.out */
+		"riscv executable",
+		nil,
+		FRISCV,
+		0,
+		&mriscv,
+		sizeof(Exec),
+		beswal,
+		common },
+	{ Y_MAGIC,			/* riscv j.out */
+		"riscv64 executable",
+		nil,
+		FRISCV64,
+		0,
+		&mriscv64,
+		sizeof(Exec),
+		beswal,
+		common },
 	{ 0 },
 };
 
@@ -357,6 +377,12 @@ commonboot(Fhdr *fp)
 		fp->name = "amd64 plan 9 boot image";
 		fp->dataddr = _round(fp->txtaddr+fp->txtsz, mach->pgsize);
 		break;
+	case FRISCV:
+		fp->type = FRISCVB;
+		fp->txtaddr = (u32int)fp->entry;
+		fp->name = "riscv plan 9 boot image";
+		fp->dataddr = _round(fp->txtaddr+fp->txtsz, mach->pgsize);
+  		break;
 	default:
 		return;
 	}
@@ -425,22 +451,22 @@ mipsboot(int fd, Fhdr *fp, ExecHdr *hp)
 {
 	USED(fd);
 	fp->type = FMIPSB;
-	switch(hp->e.mips.amagic) {
+	switch(hp->e.mips32.amagic) {
 	default:
 	case 0407:	/* some kind of mips */
-		settext(fp, (u32int)hp->e.mips.mentry, (u32int)hp->e.mips.text_start,
-			hp->e.mips.tsize, sizeof(struct mipsexec)+4);
-		setdata(fp, (u32int)hp->e.mips.data_start, hp->e.mips.dsize,
-			fp->txtoff+hp->e.mips.tsize, hp->e.mips.bsize);
+		settext(fp, (u32int)hp->e.mips32.mentry, (u32int)hp->e.mips32.text_start,
+			hp->e.mips32.tsize, sizeof(struct mipsexec)+4);
+		setdata(fp, (u32int)hp->e.mips32.data_start, hp->e.mips32.dsize,
+			fp->txtoff+hp->e.mips32.tsize, hp->e.mips32.bsize);
 		break;
 	case 0413:	/* some kind of mips */
-		settext(fp, (u32int)hp->e.mips.mentry, (u32int)hp->e.mips.text_start,
-			hp->e.mips.tsize, 0);
-		setdata(fp, (u32int)hp->e.mips.data_start, hp->e.mips.dsize,
-			hp->e.mips.tsize, hp->e.mips.bsize);
+		settext(fp, (u32int)hp->e.mips32.mentry, (u32int)hp->e.mips32.text_start,
+			hp->e.mips32.tsize, 0);
+		setdata(fp, (u32int)hp->e.mips32.data_start, hp->e.mips32.dsize,
+			hp->e.mips32.tsize, hp->e.mips32.bsize);
 		break;
 	}
-	setsym(fp, hp->e.mips.nsyms, 0, hp->e.mips.pcsize, hp->e.mips.symptr);
+	setsym(fp, hp->e.mips32.nsyms, 0, hp->e.mips32.pcsize, hp->e.mips32.symptr);
 	fp->hdrsz = 0;			/* header stripped */
 	return 1;
 }
@@ -579,6 +605,10 @@ elfdotout(int fd, Fhdr *fp, ExecHdr *hp)
 	case ARM:
 		mach = &marm;
 		fp->type = FARM;
+		break;
+	case RISCV:
+		mach = &mriscv;
+		fp->type = FRISCV;
 		break;
 	default:
 		return 0;
