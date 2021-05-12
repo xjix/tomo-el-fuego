@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 ## build/release process
 ## create and enter build chroot
 # [sudo] ./tomo-dev-chroot.sh make /opt/tomo-dev-chroot

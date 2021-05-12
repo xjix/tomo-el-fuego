@@ -18,6 +18,7 @@ emu/*/*.root.[ch]
 emu/*/errstr.h
 emu/*/srv.h
 emu/*/srvm.h
+emu/Linux/emu.c
 [A-Z]*/*/bin/?[acl]
 [A-Z]*/*/bin/5coff
 [A-Z]*/*/bin/5cv

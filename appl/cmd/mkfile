@@ -66,6 +66,7 @@ TARG=\
 	export.dis\
 	fc.dis\
 	fcp.dis\
+	find.dis\
 	fmt.dis\
 	fortune.dis\
 	freq.dis\
