@@ -278,7 +278,7 @@ toolbar(ctxt: ref Draw->Context, startmenu: int,
 	tk->namechan(tbtop, task, "task");
 	cmd(tbtop, "frame .toolbar");
 	if (startmenu) {
-		cmd(tbtop, "menubutton .toolbar.start -menu .m -borderwidth 0 -bitmap vitasmall.bit");
+		cmd(tbtop, "menubutton .toolbar.start -menu .m -borderwidth 0 -bitmap tomosmall.bit");
 		cmd(tbtop, "pack .toolbar.start -side left");
 	}
 	cmd(tbtop, "pack .toolbar -fill x");

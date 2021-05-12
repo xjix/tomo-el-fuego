@@ -8,6 +8,7 @@
 # * [ ] theme ui
 # * [ ] playfs
 # * [ ] ircfs
+# * [ ] authsrv9
 # * [ ] /dev/audio->jack/pipewire
 # * [ ] reducer transform protocol library
 # * [ ] tweetnacl

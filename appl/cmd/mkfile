@@ -33,7 +33,7 @@ TARG=\
 	auhdr.dis\
 	basename.dis\
 	bind.dis\
-	# bit2gif.dis\
+	bit2gif.dis\
 	bytes.dis\
 	cal.dis\
 	calc.dis\
@@ -75,7 +75,7 @@ TARG=\
 	ftpfs.dis\
 	getauthinfo.dis\
 	gettar.dis\
-	# gif2bit.dis\
+	gif2bit.dis\
 	grep.dis\
 	gunzip.dis\
 	gzip.dis\
