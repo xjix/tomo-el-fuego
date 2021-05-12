@@ -57,14 +57,16 @@ case "${1}" in
 		exec chroot $MY_CHROOT /bin/bash
 		;;
 	release-Linux)
-		export objtype=386
+		set -e
 		export syshost=Linux
+		export objtype=386
 		export iroot=/opt/tomo
+		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		build_id=`hg id --id`
 		./makemk.sh
 		mk nuke
 		mk install
-		tar --exclude-vcs -C /opt/tomo -cjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 .
+		tar --exclude-vcs -C /opt/tomo -cvjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 .
 		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"
