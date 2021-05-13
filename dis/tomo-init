@@ -1,0 +1,15 @@
+#!/dis/sh
+load std
+load arg
+if {test -f /env/emuroot} {
+	bind '#U*/home' /usr
+}
+args = $*
+tomo_user = ()
+(arg
+	u+ {tomo_user=$arg}
+	- $args
+)
+if {! no $tomo_user} {
+	@ wm/wm wm/logon -u $tomo_user
+}

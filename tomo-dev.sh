@@ -56,16 +56,35 @@ case "${1}" in
 		cp /proc/mounts $MY_CHROOT/etc/mtab
 		exec chroot $MY_CHROOT /bin/bash
 		;;
-	release-Linux)
+	build)
+		shift
 		set -e
-		export syshost=Linux
-		export objtype=386
-		export iroot=/opt/tomo
+		export iroot=$1
+		export syshost=$2
+		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		build_id=`hg id --id`
 		./makemk.sh
 		mk nuke
 		mk install
+		;;
+	rebuild)
+		shift
+		export iroot=$1
+		export syshost=$2
+		export objtype=$3
+		export PATH=$iroot/$syshost/$objtype/bin:$PATH
+		mk install
+		;;
+	rebuild-Linux)
+		$0 rebuild /opt/tomo Linux 386
+		;;
+	build-Linux)
+		$0 build /opt/tomo Linux 386
+		;;
+	release-Linux)
+		set -e
+		$0 build /opt/tomo Linux 386
 		tar --exclude-vcs -C /opt/tomo -cvjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 .
 		;;
 	*)
