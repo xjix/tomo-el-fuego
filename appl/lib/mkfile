@@ -59,6 +59,7 @@ TARG=\
 	ip.dis\
 	ipattr.dis\
 	ir.dis\
+	irc.dis\
 	irsage.dis\
 	irsim.dis\
 	itslib.dis\
@@ -178,6 +179,7 @@ SYSMODULES= \
 	imagefile.m\
 	inflate.m\
 	ir.m\
+	irc.m\
 	keyring.m\
 	lock.m\
 	man.m\

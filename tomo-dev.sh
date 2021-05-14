@@ -7,7 +7,7 @@
 # * [ ] design architecture
 # * [ ] theme ui
 # * [ ] playfs
-# * [ ] ircfs
+# * [x] ircfs
 # * [ ] authsrv9
 # * [ ] /dev/audio->jack/pipewire
 # * [ ] reducer transform protocol library
@@ -63,7 +63,6 @@ case "${1}" in
 		export syshost=$2
 		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
-		build_id=`hg id --id`
 		./makemk.sh
 		mk nuke
 		mk install
@@ -84,8 +83,12 @@ case "${1}" in
 		;;
 	release-Linux)
 		set -e
-		$0 build /opt/tomo Linux 386
-		tar --exclude-vcs -C /opt/tomo -cvjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 .
+		build_id=`hg id --id`
+		iroot=/opt/tomo
+		syshost=Linux
+		objtype=386
+		$0 build $iroot $syshost $objtype
+		tar --exclude-vcs -C /opt/ -cvjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 tomo
 		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"

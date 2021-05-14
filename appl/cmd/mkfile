@@ -82,6 +82,7 @@ TARG=\
 	idea.dis\
 	import.dis\
 	iostats.dis\
+	ircfs.dis\
 	itest.dis\
 	itreplay.dis\
 	kill.dis\
@@ -150,6 +151,7 @@ TARG=\
 	tee.dis\
 	telnet.dis\
 	test.dis\
+	testirc.dis\
 	time.dis\
 	timestamp.dis\
 	tkcmd.dis\
@@ -191,6 +193,7 @@ SYSMODULES=\
 	filter.m\
 	fslib.m\
 	ir.m\
+	irc.m\
 	keyring.m\
 	man.m\
 	newns.m\
