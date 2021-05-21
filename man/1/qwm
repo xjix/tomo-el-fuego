@@ -1,0 +1,392 @@
+.TH QWM 1
+.SH NAME
+qwm \- window manager
+.SH SYNOPSIS
+.B wm/qwm
+[
+.B -d
+] [
+.I profile
+]
+.SH DESCRIPTION
+.I Qwm
+is a window manager.
+Its arrangement of stacks of windows in columns is similar to that of acme.
+.PP
+.I Qwm
+always has nine columns, 1-9.
+Visibility of each column can be toggled.
+Columns can be used as ``work spaces''.
+At least one column is always visible, by default columns 1 and 2.
+Focus is always at a column, and if that column has windows, on a window.
+The focus follows the mouse.
+A column can be in
+.I stack
+or
+.I single
+mode.
+In single mode, only one window is visible at the time, taking up the full height of the column.
+In stack mode, multiple windows can be visible at a time.
+.PP
+Columns can be moved and resized by clicking or dragging the box in their upper left corner.
+Windows can be moved and resized by dragging their title bar or clicking their buttons.
+Windows and columns can also be manipulated by keyboard commands.
+These commands are single characters preceded by a
+.BR ^q ,
+control-q.
+Keys exist for creating new windows, moving windows between columns, resizing windows, and resizing columns and making columns visible or hidden.
+.PP
+New windows are placed in the column with focus.
+If an adjacent column is at least 1.5 wider than the focused column, the window is placed there instead.
+In single mode, the new window is made visible and receives focus.
+In stacked mode, the new window takes the place of the largest window, leaving only the titlebar of the previously largest window visible.
+If the old window had focus (i.e. was in the focused column), it is ignored when looking for the largest window to replace.
+This is useful e.g. when the focused window has a list of files that can be opened by plumbing.
+.PP
+.SS Options
+If
+.I profile
+is given on the command line, it is executed by the shell after
+.I qwm
+is started.
+It is typically used to set up the namespace and start commands.
+.TP
+.B -d
+Enable debug prints.
+
+.PP
+In the text below,
+.IR B1 ,
+.I B2
+and
+.I B3
+stand for buttons 1, 2 and 3.
+
+.SH TAGS
+Each column has a tag bar at the top.
+The tag bar contains, from left to right:
+.PP
+.IP \(bu 2
+Box for resizing and moving the column
+.IP \(bu 2
+Column number (1-9)
+.IP \(bu 2
+.I Mode
+of the column (
+.I stack
+or
+.IR single )
+.IP \(bu 2
+Sequence number for each window
+.IP \(bu 2
+Editable text to be executed as commands.
+
+.PP
+The column with focus has a brighter background for the column number and mode.
+For each column, the window number that has or would have focus  (if its column had focus) also has a brighter background.
+
+.PP
+When editing text, the following keys are handled specially:
+.IP ^h
+Delete character before cursor.
+.IP ^w
+Delete word before cursor.
+.IP ^u
+Delete all text before cursor.
+.IP ^a
+Move cursor to start of text.
+.IP ^e
+Move cursor to end of text.
+.IP Left
+Move cursor one character to the left.
+.IP Right
+Move cursor one character to the right.
+
+.SH MOUSE
+Mouse control in
+.I qwm
+is similar to that of
+.IR acme .
+Mouse operations per area in the column:
+
+.SS Box
+.TP
+B1
+Enlarge the column, preferrably taking space from columns on its right.
+.TP
+B2
+Make the column as large as possible but leaving some minimal space for each column.
+.TP
+B3
+Make the column the only one visible.
+.TP
+B1 drag
+Move the column if B1 is released beyond another column's left side.
+Otherwise set the left side of the column to the position of B1's release.
+
+.SS Mode
+.TP
+B1
+Switch the mode of the column, between
+.I stack
+and
+.IR single .
+
+.SS Window sequence number
+Clicking a window number with any of B1, B2 or B3 gives the focus to that window, also making sure it is visible.
+Further clicks are treated the same as clicks on the window's title bars.
+Dragging has no effect.
+
+.SS Commands
+B1 sets the cursor for editing and resets the selection.
+Moving with B1 held expands the selection.
+Double clicking B1 selects the word under the pointer.
+Pressing B2 and moving with B2 held sets a new selection as well.
+Releasing B2 executes the selection if it is not empty, and otherwise the word under the pointer.
+Chording is not supported.
+Several commands are handled internally:
+.TP
+.B Hide
+Hide the column.
+.TP
+.B Cols
+Show all columns with one or more windows.
+.TP
+.BI Showcol " col"
+Make column
+.I col
+visible.
+.TP
+.BI Killwin " win"
+Kill processes servicing the program identified by window number
+.I win
+and drop all references to it, most importantly its window.
+.TP
+.BI Program " program"
+Set the program to run for
+.LR ^qc
+to
+.IR program .
+
+.SS Window title bar
+A typical application has buttons for resizing, hiding/minimizing and closing the application.
+The resize button has no effect in qwm.
+Minimizing a window shows the next window when in
+.I single
+mode, and changes the size of the window so that only the title bar is still visible when in
+.I stack
+mode.
+Further operations:
+.TP
+B1
+Makes the window larger if space can be taken from other applications while keeping at least their title bar visible.
+.TP
+B2
+Like B1, but take as much space as possible.
+.TP
+B3
+Use all space, leaving zero height for other applications.
+This is different from
+.I single
+mode, e.g. B1 and B2 still do as advertised above.
+.TP
+B1 drag
+If the button is released over another column, moves the window to that column.
+If the button is released beyond another window's title bar, moves the window.
+Otherwise, resize the window.
+The window's title bar is left at the vertical position where the button was released.
+
+.SH KEYS
+Key commands start with the modifier
+.BR ^q ,
+control-q (hence the name
+.IR qwm ).
+All commands are one character long.
+These characters can also be typed with control held, e.g. ``^q^c'' is equivalent to ``^qc''.
+This makes it easier to execute (multiple) commands.
+Some commands move the focus or change the size of windows.
+Qwm always makes sure the mouse is over the window or column that holds the focus.
+This makes it convenient to use both keyboard and mouse commands.
+In the commands below, ``window'' typically refers to the focused window, and ``column'' to the focused column.
+
+.TP
+.B c
+Start new instance of
+.IR wm/run .
+.TP
+.B x
+Ask program to exit.
+.TP
+.B X
+Kill processes servicing program and drop all references to it, most importantly its window.
+.TP
+.B q
+Restore previous column configuration (which columns were visible), and restore focus to the window at that time.
+.TP
+.BR j " or " k
+Place focus on previous/next window in column.
+.TP
+.BR J " or " K
+Move window beyond previous/next window in column.
+.TP
+.BR h " or " l
+Place focus on previous/next column.
+.TP
+.BR H " or " L
+Move window to previous/next column.
+.TP
+.BR 1 " to " 9
+Show only single column.
+.TP
+.B 0
+Show all columns with one or more windows.
+.TP
+.BR shift-1 " to " shift-9
+Toggle visibility of column.
+.TP
+.B f
+Toggle mode for column, between
+.I stack
+and
+.IR single .
+.TP
+.B F
+Set
+.I single
+mode for the column, and hide all other columns.
+.TP
+.B i
+Make window bigger.
+.TP
+.B u
+Make window as big as possible without hiding other windows's title bars.
+.TP
+.B o
+Make column bigger.
+.TP
+.B O
+Make column as big as possible without hiding other columns.
+.TP
+.B r
+Move mouse to position before last warp.
+.TP
+.B d
+Toggle debug printing.
+.TP
+.B D
+Print information about windows to stderr.
+
+.SH WMCTL
+.PP
+Reading from
+.B /chan/wmctl
+creates a new window, the
+.I tag
+of the window is returned.
+The following formats may be written to such file descriptors:
+.TP
+.I "!reshape tag reqid minx miny maxx maxy [how]"
+.TP
+.I "!move tag reqid startx starty"
+.TP
+.I "!size tag reqid startx starty"
+.TP
+.I "start [ptr|kbd|control]"
+.TP
+.I "key decimal-key"
+.TP
+.I "delete tag"
+.TP
+.I fixedorigin
+.TP
+.I "kbdfocus [want]"
+.TP
+.IR lower " and " task
+.TP
+.IR raise " and " unhide
+.TP
+.I "ptr x y"
+.TP
+.I "cursor hotx hoty dx dy hex-image"
+.TP
+.I max
+.TP
+.I full
+
+.PP
+The following writes to
+.B /chan/wmctl
+are allowed only for file descriptors with no tag associated:
+.TP
+.BI program " program"
+Set the program to run for
+.LR "^qc" .
+.TP
+.B cols
+Show only columns with one or more windows.
+.TP
+.BI showcol " colnr"
+Make column
+.I colnr
+visible.
+.TP
+.I what " color"
+With
+.I what
+one of:
+.LR tagfg ,
+.LR tagbg ,
+.LR tagselbg ,
+.LR tagbox ,
+.LR colbg .
+.I Color
+must be a color in hexadecimal
+.I rrggbbaa
+format.
+These commands set the colors of the tags, column box and column background.
+
+.PP
+.I Qwm's
+screen size can be read from
+.BR /chan/wmrect .
+
+.SH EXAMPLES
+With the following in the
+.IR profile ,
+the program to run for
+.LR "^qc"
+is set to
+.I wm/sh
+and colors made similar to acme's (though without any borders!):
+.PP
+.EX
+        echo -n 'program wm/sh' >/chan/wmctl &
+        echo -n 'tagfg 000000ff' >/chan/wmctl &
+        echo -n 'tagbg d4ffffff' >/chan/wmctl &
+        echo -n 'tagselbg aaffffff' >/chan/wmctl &
+        echo -n 'boxc 8888ccff' >/chan/wmctl &
+        echo -n 'colbg ffffd4ff' >/chan/wmctl &
+.EE
+
+.SH FILES
+.B /chan/wmrect
+.br
+.B /chan/wmctl
+
+.SH SOURCE
+/appl/wm/qwm.b
+.SH SEE ALSO
+.IR wm (1),
+.IR wm-run (1),
+.IR acme (1)
+.SH BUGS
+A "floating" layout mode, where windows can move freely, is not implemented.
+.PP
+Qwm cannot hide the title bar of windows, or influence the buttons displayed.
+The programs draw those themselves.
+.PP
+Inferno's default title bar does not act on B2 and B3 clicks on the title bar.
+.PP
+Qwm cannot currently run in an existing draw context.
+.PP
+Qwm does not work with wm/keyboard since focus (including keyboard focus) follows the mouse.

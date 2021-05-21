@@ -42,6 +42,7 @@ TARG=\
 	pen.dis\
 	polyhedra.dis\
 	prof.dis\
+	qwm.dis\
 ##	qt.dis\
 	readmail.dis\
 	remotelogon.dis\
