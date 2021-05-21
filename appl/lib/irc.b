@@ -1,3 +1,5 @@
+# This is free and unencumbered software released into the public domain.
+# see /lib/legal/UNLICENSE
 implement Irc;
 
 include "sys.m";

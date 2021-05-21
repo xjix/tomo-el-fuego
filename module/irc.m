@@ -1,3 +1,5 @@
+# This is free and unencumbered software released into the public domain.
+# see /lib/legal/UNLICENSE
 Irc: module
 {
 	PATH:	con "/dis/lib/irc.dis";

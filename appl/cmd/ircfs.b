@@ -1,3 +1,7 @@
+# ircfs
+# This is free and unencumbered software released into the public domain.
+# see /lib/legal/UNLICENSE
+
 # ircfs design.
 #
 # each channel and user is represented by a Target.
