@@ -42,7 +42,7 @@ arguments.
 .br
 .B /appl/cmd/disdump.b
 .SH "SEE ALSO"
-.IR dis (6)
+.IR dis (6),
 .IR emu (1),
 .IR limbo (1)
 .PP
