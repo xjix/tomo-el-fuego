@@ -1,0 +1,17 @@
+#!/dis/sh
+# This is free and unencumbered software released into the public domain.
+# see /lib/legal/UNLICENSE
+load std
+if {test -f /env/user} {
+	user = `{cat /env/user}
+	# are there other hubchats? maybe we should keep a local db of these
+	mount -Ac tcp!registry.9gridchan.org!6675 /mnt/registry
+	# FIXME likely not the best way to parse this
+	chat_svc = `{grep chat /mnt/registry/index | sed -n 's/(.+)( is gridchat.+)/\1/p'}
+	mount -Ac $chat_svc /mnt/hubchat
+	if {test -f /mnt/hubchat/chat} {
+		cat /mnt/hubchat/chat &
+		echo join $user from TOMO >>/mnt/hubchat/chat
+		getlines { echo $user → $line } >>/mnt/hubchat/chat
+	}
+}
