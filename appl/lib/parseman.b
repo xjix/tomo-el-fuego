@@ -72,7 +72,7 @@ parseman[T](fd: ref Sys->FD, metrics: Metrics, ql: int, viewer: T, setline: chan
 	state.pspace = 2;
 	state.pspace = 1;
 	state.paragraph();
-	footer := Text(FONT_ROMAN, 0, "Inferno Manual", 0, nil);
+	footer := Text(FONT_ROMAN, 0, "Tomo el Fuego Manual", 0, nil);
 	textw := state.viewer.textwidth(footer);
 #should do 'center' in addtext (state.justify = CENTER)
 	state.indent = (state.metrics.pagew - textw) / 2;
