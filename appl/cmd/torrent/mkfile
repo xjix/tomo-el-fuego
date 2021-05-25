@@ -1,0 +1,38 @@
+<../../../mkconfig
+
+TARG=\
+	parse.dis\
+	trackerget.dis\
+	peer.dis\
+	verify.dis\
+	info.dis\
+	track.dis\
+	create.dis\
+
+MODULES=\
+	../../lib/bittorrentpeer.m\
+
+SYSMODULES=\
+	arg.m\
+	bufio.m\
+	daytime.m\
+	draw.m\
+	ip.m\
+	keyring.m\
+	math.m\
+	rand.m\
+	security.m\
+	string.m\
+	styx.m\
+	styxservers.m\
+	sys.m\
+	tables.m\
+	bitarray.m\
+	bittorrent.m\
+	cgi.m\
+	mhttp.m\
+	util0.m\
+
+DISBIN=$ROOT/dis/torrent
+
+<$ROOT/mkfiles/mkdis

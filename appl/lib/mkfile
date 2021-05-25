@@ -20,8 +20,12 @@ TARG=\
 	attrhash.dis\
 	auth.dis\
 	auth9.dis\
+	bitarray.dis\
+	bittorrent.dis\
+	bittorrentpeer.dis\
 	bloomfilter.dis\
 	bufio.dis\
+	cgi.dis\
 	cfg.dis\
 	cfgfile.dis\
 	chanfill.dis\
@@ -54,6 +58,7 @@ TARG=\
 	fsproto.dis\
 	hash.dis\
 	html.dis\
+	htmlent.dis\
 	imageremap.dis\
 	inflate.dis\
 	ip.dis\
@@ -76,8 +81,10 @@ TARG=\
 	msgio.dis\
 	nametree.dis\
 	names.dis\
+	netstr.dis\
 	newns.dis\
 	ninep.dis\
+	ohttp.dis\
 	oldauth.dis\
 	palm.dis\
 	palmdb.dis\
@@ -104,6 +111,7 @@ TARG=\
 	registries.dis\
 	rfc822.dis\
 	riff.dis\
+	rssgen.dis\
 	scoretable.dis\
 	scsiio.dis\
 	secstore.dis\
@@ -124,6 +132,7 @@ TARG=\
 	styxservers.dis\
 	tables.dis\
 	tabs.dis\
+	template.dis\
 	tftp.dis\
 	timers.dis\
 	tcl_utils.dis\
@@ -143,6 +152,7 @@ TARG=\
 	translate.dis\
 	ubfa.dis\
 	url.dis\
+	util0.dis\
 	vac.dis\
 	venti.dis\
 	virgil.dis\
@@ -157,9 +167,14 @@ TARG=\
 	writegif.dis\
 	xml.dis\
 
-MODULES=
+MODULES= \
+	bittorrentpeer.m\
 
 SYSMODULES= \
+	asn1.m\
+	bufio.m\
+	bitarray.m\
+	bittorrent.m\
 	bufio.m\
 	cci.m\
 	daytime.m\
@@ -168,6 +183,7 @@ SYSMODULES= \
 	devpointer.m\
 	dict.m\
 	draw.m\
+	encoding.m\
 	env.m\
 	exception.m\
 	factotum.m\
@@ -176,16 +192,22 @@ SYSMODULES= \
 	fslib.m\
 	hash.m\
 	html.m\
+	htmlent.m\
 	imagefile.m\
 	inflate.m\
+	ip.m\
 	ir.m\
 	irc.m\
 	keyring.m\
 	lock.m\
 	man.m\
+	mhttp.m\
 	mpeg.m\
+	netstr.m\
 	newns.m\
+	ohttp.m\
 	palmfile.m\
+	pkcs.m\
 	plumbmsg.m\
 	powerman.m\
 	prefab.m\
@@ -195,17 +217,22 @@ SYSMODULES= \
 	readdir.m\
 	regex.m\
 	riff.m\
+	rssgen.m\
 	scoretable.m\
 	security.m\
 	sh.m\
 	smtp.m\
 	srv.m\
+	ssl3.m\
+	sslsession.m\
 	string.m\
 	styx.m\
 	styxservers.m\
 	sys.m\
 	tables.m\
+	template.m\
 	url.m\
+	util0.m\
 	venti.m\
 	volume.m\
 	watchvars.m\

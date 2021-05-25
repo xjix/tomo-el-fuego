@@ -59,6 +59,7 @@ TARG=\
 	telnet.dis\
 	tetris.dis\
 	toolbar.dis\
+	torrent.dis\
 	unibrowse.dis\
 	view.dis\
 	vt.dis\
@@ -70,6 +71,9 @@ MODULES=\
 	wmdeb.m\
 
 SYSMODULES=\
+	arg.m\
+	bitarray.m\
+	bittorrent.m\
 	bufio.m\
 	cci.m\
 	daytime.m\
@@ -79,10 +83,12 @@ SYSMODULES=\
 	html.m\
 	keyring.m\
 	man.m\
+	math.m\
 	mpeg.m\
 	newns.m\
 	plumbmsg.m\
 	quicktime.m\
+	lists.m\
 	rand.m\
 	readdir.m\
 	riff.m\
@@ -90,9 +96,11 @@ SYSMODULES=\
 	sh.m\
 	string.m\
 	sys.m\
+	tables.m\
 	tk.m\
 	tkclient.m\
 	url.m\
+	util0.m\
 	webget.m\
 	wmclient.m\
 	wmsrv.m\

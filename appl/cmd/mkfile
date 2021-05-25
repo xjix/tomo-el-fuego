@@ -19,6 +19,7 @@ DIRS=\
 	sh\
 	spki\
 	ssh\
+	torrent\
 	usb\
 
 TARG=\
@@ -40,6 +41,8 @@ TARG=\
 	cat.dis\
 	cd.dis\
 	cddb.dis\
+	cgiparse.dis\
+	cgienv.dis\
 	chgrp.dis\
 	chmod.dis\
 	cleanname.dis\
@@ -79,6 +82,7 @@ TARG=\
 	grep.dis\
 	gunzip.dis\
 	gzip.dis\
+	hget.dis\
 	idea.dis\
 	import.dis\
 	iostats.dis\
@@ -127,9 +131,11 @@ TARG=\
 	rcmd.dis\
 	rdp.dis\
 	read.dis\
+	readnetstr.dis\
 	rioimport.dis\
 	rm.dis\
 	runas.dis\
+	scgils.dis\
 	sed.dis\
 	sendmail.dis\
 	sha1sum.dis\
@@ -151,7 +157,15 @@ TARG=\
 	tee.dis\
 	telnet.dis\
 	test.dis\
+	testbitarray.dis\
+	testcgi.dis\
+	testhtmlent.dis\
 	testirc.dis\
+	testnetstr.dis\
+	testrssgen.dis\
+	testtemplate.dis\
+	testtemplate2.dis\
+	testutil0.dis\
 	time.dis\
 	timestamp.dis\
 	tkcmd.dis\
@@ -176,6 +190,7 @@ TARG=\
 	wish.dis\
 	wmexport.dis\
 	wmimport.dis\
+	writenetstr.dis\
 	xargs.dis\
 	xd.dis\
 	yacc.dis\
@@ -184,22 +199,30 @@ TARG=\
 MODULES=\
 
 SYSMODULES=\
+	arg.m\
+	bitarray.m\
 	bufio.m\
 	bundle.m\
+	cgi.m\
 	daytime.m\
 	draw.m\
 	env.m\
 	filepat.m\
 	filter.m\
 	fslib.m\
+	htmlent.m\
 	ir.m\
 	irc.m\
 	keyring.m\
+	lists.m\
 	man.m\
+	mhttp.m\
+	netstr.m\
 	newns.m\
 	prefab.m\
 	readdir.m\
 	regex.m\
+	rssgen.m\
 	security.m\
 	sh.m\
 	srv.m\
@@ -207,9 +230,11 @@ SYSMODULES=\
 	styx.m\
 	styxlib.m\
 	sys.m\
+	template.m\
 	tk.m\
 	tkclient.m\
 	url.m\
+	util0.m\
 	webget.m\
 	workdir.m\
 
