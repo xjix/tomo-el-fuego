@@ -1,22 +1,6 @@
 #!/bin/sh
 # tomo-dev.sh(1) - dev utility scripts
 # ====================================
-## TODO in no particular order
-# * [x] find
-# * [ ] qwm
-# * [ ] design architecture
-# * [ ] theme ui
-# * [ ] playfs
-# * [x] ircfs
-# * [ ] authsrv9
-# * [ ] /dev/audio->jack/pipewire
-# * [ ] reducer transform protocol library
-# * [ ] tweetnacl
-# * [ ] attrfs->systemdb
-# * [ ] ttffs (how did i convert that oldschool pc font?)
-# * [ ] add opendyslexic font
-# * [ ] add hermit font
-# * [ ] add atkinson-hyperlegible font (new default)
 #
 ## build/release process
 #
