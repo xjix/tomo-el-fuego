@@ -6,6 +6,7 @@ DIRS=\
 TARG=\
 	aescbc.dis\
 	ai2key.dis\
+	authsrv9.dis\
 	changelogin.dis\
 	countersigner.dis\
 	convpasswd.dis\
@@ -16,6 +17,7 @@ TARG=\
 	getpk.dis\
 	logind.dis\
 	mkauthinfo.dis\
+	passtokey.dis\
 	passwd.dis\
 	rsagen.dis\
 	secstore.dis\
@@ -24,6 +26,9 @@ TARG=\
 
 SYSMODULES=\
 	arg.m\
+	auth9.m\
+	daytime.m\
+	draw.m\
 	keyring.m\
 	security.m\
 	rand.m\

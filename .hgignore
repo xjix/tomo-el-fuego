@@ -60,6 +60,8 @@ keydb/signerkey
 tmp/*
 *.rej
 utils/mk/mk
+dis/demo/camera/cam*.bit
+dis/demo/lego/styx.srec
 
 syntax: regexp
 ^dis/.*.dis
