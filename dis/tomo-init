@@ -1,15 +1,20 @@
 #!/dis/sh
 load std
 load arg
-if {test -f /env/emuroot} {
-	bind '#U*/home' /usr
-}
-args = $*
-tomo_user = ()
+user = ''
+args  := $*
 (arg
-	u+ {tomo_user=$arg}
+	u+  {user=$arg}
 	- $args
 )
-if {! no $tomo_user} {
-	@ wm/wm wm/logon -u $tomo_user
+if {test -f /env/user} {
+	echo $user >/dev/user
 }
+if {test -f /env/emuroot} {
+	bind '#U*/home' /usr
+	if {test -f /env/user} {
+		home = /usr/^$user
+		cd $home
+	}
+}
+@ wm/qwm /lib/qwmsetup

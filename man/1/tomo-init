@@ -1,0 +1,68 @@
+.TH TOMO-INIT 1
+.SH NAME
+logon \- log on to Tomo el Fuego
+.SH SYNOPSIS
+.B wm/logon
+[
+.B -l
+] [
+.BI "-u user"
+]
+.SH DESCRIPTION
+.I tomo init
+logs a user in to the Tomo el Fuego environment.
+It is generally called from
+.IR sh (1)
+as the init program for the system
+If no
+.I user
+name is specified by the
+.B -u
+option,
+.I tomo-init
+displays a login panel to prompt for one.
+The user name must have a directory
+.BI /usr/ user,
+which will become the current directory.
+(Otherwise,
+.I logon
+will display a diagnostic panel and prompt again.)
+The user name is written to
+.B /dev/user
+(see
+.IR cons (3)),
+which is the name presented on subsequent attaches to file servers.
+.PP
+Normally,
+.I logon
+expects keyboard input to provide a name,
+but if the
+.B -l
+option is given,
+.I logon
+displays a list of the names in
+.BR /usr ,
+allowing one to be selected using a mouse or touch screen.
+.PP
+Once the current directory has been set,
+.I logon
+creates a new name space for the user.
+It then starts
+.IR qwm (1)
+to provide the initial application environment.
+.SH FILES
+.TF /dev/userxx
+.TP
+.B /dev/user
+Inferno user name
+.TP
+.BI /usr/ user
+.IR user 's
+home directory
+.SH SOURCE
+.B /dis/tomo-init
+.SH SEE ALSO
+.IR toolbar (1),
+.IR qwm (1),
+.IR wm (1),
+.IR namespace (6)

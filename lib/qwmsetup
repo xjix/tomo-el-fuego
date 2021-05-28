@@ -1,0 +1,18 @@
+#!/dis/sh
+# https://github.com/mjl-/wmrun
+# setup theme
+echo -n 'program wm/sh' >/chan/wmctl &
+echo -n 'tagfg 000000ff' >/chan/wmctl &
+echo -n 'tagbg d4ffffff' >/chan/wmctl &
+echo -n 'tagselbg aaffffff' >/chan/wmctl &
+#echo -n 'boxc 8888ccff' >/chan/wmctl &
+echo -n 'colbg ffffd4ff' >/chan/wmctl &
+
+# setup mntgen and session services
+mkdir -p /mnt
+mount {mntgen} /mnt
+{ndb/cs}
+{auth/factotum}
+{auth/feedkey}
+
+if {ftest -f $home/lib/wmsetup} {run $home/lib/wmsetup} {}
