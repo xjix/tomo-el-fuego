@@ -60,10 +60,12 @@ case "${1}" in
 		mk install
 		;;
 	rebuild-Linux)
-		$0 rebuild /opt/tomo Linux 386
+		shift
+		$0 rebuild ${1:-"/opt/tomo"} Linux 386
 		;;
 	build-Linux)
-		$0 build /opt/tomo Linux 386
+		shift
+		$0 build ${1:-"/opt/tomo"} Linux 386
 		;;
 	release-Linux)
 		set -e

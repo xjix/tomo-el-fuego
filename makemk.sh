@@ -4,8 +4,6 @@
 # that currently lacks a binary for mk.  after that, mk can
 # look after itself.
 
-#	support@vitanuova.com
-
 # change these defines as appropriate here or in mkconfig
 # ROOT should be the root of the Inferno tree
 ROOT=/usr/inferno
@@ -19,6 +17,7 @@ grep -s 'SYSTARG=Plan9' mkconfig || . ./mkconfig
 PLAT=$ROOT/$SYSTARG/$OBJTYPE
 
 # you might need to adjust the CC, LD, AR, and RANLIB definitions after this point
+# FIXME build fails under termux/clang and termux/gcc-9
 CC="p gcc -c -I$PLAT/include -I$ROOT/include -I$ROOT/utils/include"
 LD="p gcc"
 AR="p ar crvs"
