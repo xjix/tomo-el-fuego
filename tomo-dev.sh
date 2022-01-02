@@ -21,6 +21,10 @@
 #
 # scp /opt/tomo-dev-chroot/opt/tomo-$syshost-$objtype.tbz2 $release_target
 #
+# multilib notes:
+#
+# apt-get install -y mercurial libx11-dev:i386 libxext-dev:i386 gcc:i386 libc6-dev-i386
+#
 case "${1}" in
 	make-chroot)
 		shift
