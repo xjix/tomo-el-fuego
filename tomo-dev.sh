@@ -11,9 +11,15 @@
 #
 # within chroot
 #
-# apt-get install -y mercurial libx11-dev libxext-dev libc6-dev gcc
+# apt-get install -y \
+# gcc \
+# libc6-dev \
+# libx11-dev \
+# libxext-dev \
+# mercurial
+#
 # cd /opt
-# hg clone https://src.xj-ix.luxe/tomo/
+# hg clone http://source.heropunch.luxe/tomo/
 # cd tomo
 # ./tomo-dev.sh release-Linux
 #
@@ -21,9 +27,17 @@
 #
 # scp /opt/tomo-dev-chroot/opt/tomo-$syshost-$objtype.tbz2 $release_target
 #
-# multilib notes:
+## multilib notes:
 #
-# apt-get install -y mercurial libx11-dev:i386 libxext-dev:i386 gcc:i386 libc6-dev-i386
+### debian
+#
+# apt-get install -y \
+# binutils:i386 \
+# gcc:i386 \
+# libc6-dev-i386 \
+# libx11-dev:i386 \
+# libxext-dev:i386 \
+# mercurial
 #
 case "${1}" in
 	make-chroot)
