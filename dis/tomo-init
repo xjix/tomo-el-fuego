@@ -1,20 +1,34 @@
 #!/dis/sh
 load std
 load arg
+
 user = ''
 args  := $*
+
 (arg
-	u+  {user=$arg}
-	- $args
-)
+	u+ {user=$arg}
+	- $args)
+
+## set user
 if {test -f /env/user} {
-	echo $user >/dev/user
+	echo -n $user >/env/user
 }
+
+## bind and configure homedir, setup scripts
 if {test -f /env/emuroot} {
 	bind '#U*/home' /usr
 	if {test -f /env/user} {
-		home = /usr/^$user
+		echo -n /usr/^$user >/env/home
 		cd $home
 	}
 }
-@ wm/qwm /lib/qwmsetup
+
+## run tomorc or wm/qwm
+if {test -f $home/lib/tomorc} {
+	echo running $home/lib/tomorc >[1=2]
+	env >[1=2]
+	@ $home/lib/tomorc
+} {
+	env >[1=2]
+	@ wm/qwm /lib/qwmsetup
+}

@@ -1,4 +1,5 @@
 #!/dis/sh
+load std
 # https://github.com/mjl-/wmrun
 # setup theme
 echo -n 'program wm/sh' >/chan/wmctl &
@@ -15,4 +16,4 @@ mount {mntgen} /mnt
 {auth/factotum}
 {auth/feedkey}
 
-if {ftest -f $home/lib/wmsetup} {run $home/lib/wmsetup} {}
+if {test -f $home/lib/wmsetup} {run $home/lib/wmsetup} {}
