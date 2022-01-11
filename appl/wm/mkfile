@@ -49,6 +49,7 @@ TARG=\
 	reversi.dis\
 	rmtdir.dis\
 	rt.dis\
+	run.dis\
 	sendmail.dis\
 	sh.dis\
 	smenu.dis\

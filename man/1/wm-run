@@ -1,0 +1,277 @@
+.TH WM-RUN 1
+.SH NAME
+wm/run \- run shell commands
+.SH SYNOPSIS
+.B wm/run
+[
+.B -dMC
+] [
+.B -f
+.I font
+] [
+.I cmd
+.I ...
+]
+.SH DESCRIPTION
+.I Wm/run
+reads commands and executes them using the shell.
+It reads input and write it to the programs, and reads their output and displays it.
+It is similar to
+.IR wm-sh (1)
+but with several distinctive features:
+.IP \(bu 2
+Command/input history.
+.IP \(bu 2
+.L Del
+kills the currently running command.
+.IP \(bu 2
+File name completion with the tab key.
+.IP \(bu 2
+Show stdin/out/err, and exceptions differently.
+.IP \(bu 2
+Vi-like command-line editing.
+
+.SS Options:
+If
+.I cmd
+is given on the command-line, it is executed as first command.
+.TP
+.B -d
+Enable debug prints.
+.TP
+.BI -f " font"
+Use
+.I font
+for the text and input widgets.
+.TP
+.B -M
+Do not show markup in output.
+With markup, commands and exit statuses are printed (in color), and stdin/out/err are printed in blue, white, orange respectively.
+.TP
+.B -S
+Do not automatically scroll the text view.
+.SS Interface
+.I Wm/run
+shows input written to commands and output read from commands to the main text area.
+When completing a file name, this text area is temporarily replaced by a text area showing the completion matches.
+At the bottom of its window is an input entry.
+Commands and input are read from this entry.
+To the left of the entry is a small rectangle.
+Its color indicates the state of a running program (if any):
+.PP
+.TP 6
+.I gray
+No command yet, next line will start the command.
+.TP 6
+.I green
+No reads from, or writes to the command are pending
+.TP
+.I blue
+Only reads from the command are pending.
+.TP
+.I red
+Only writes to the command are pending.
+.PP
+This rectangle also holds a character that indicates how text typed in the input entry is processed.
+If nothing is shown, text is simply added to the input entry at the cursor position (insert mode).
+.TP 4
+.B x
+Next character is interpreted as a control-x command.
+Mode is then returned to insert mode.
+.TP
+.B [
+Next character is interpreted as (part of) a vi command.
+.TP
+.B r
+Console is in raw mode, characters are written to the command immediately when then are typed, and are not shown.
+
+.SH COMMANDS
+Shell commands can be started by typing them at the input entry and hitting return.
+Several convenient keyboard shortcuts have been implemented, some starting with
+.LR ^x
+(control-x).
+If the cursor focus is in the text area
+.LR ^t
+brings it back to the input entry.
+
+.TP
+.B Del
+Kill the current command.
+.TP
+.BR "Page up" " and " "page down"
+Scroll the text area up/down a page.
+.TP
+.BR Home " and " End
+Scroll the text area to make the start/end of the command become visible.
+.TP
+.BR Up " and " Down
+Navigate command input history to previous and next commands.
+.TP
+.B tab
+Complete the file name at the word under cursor.
+.TP
+.BI "^v" "<char>"
+Insert literal
+.IR char .
+Useful for executing commands with literal tab or newline.
+Shell quoting rules must still be obeyed.
+.TP
+.B ^d
+Send end-of-file to running program.
+When no program is running, quit
+.IR wm/run .
+.TP
+.B "^x p"
+Plumb the text in the input entry.
+Delete the text if the plumb message found a destination.
+Handy in combination with file name completion.
+.TP
+.B "^x \\n"
+Run the program in the input entry with the current selection as sole input.
+.TP
+.B "^x x"
+Toggle the debug flag.
+.TP
+.B "^x ."
+Run
+.L lc
+to compactly display the contents of this directory.
+.TP
+.B "^x F"
+Compactly display all files in the file tree by calling
+.IR find (1).
+.TP
+.B "^x f"
+Compactly display most files in the file tree.
+.TP
+.B "^x d"
+Compactly display only directories in the file tree.
+
+.SS Menu
+Clicking with button 2 on the text area shows a menu.
+It holds four entries:
+.TP
+.B clear
+Clears the text area.
+.TP
+.B scroll/noscroll
+Toggles automatic scrolling when text is appended.
+The text area is only scrolled when its last line was visible before the new text was appended.
+.TP
+.B markup/nomarkup
+Toggles showing colors and exceptions.
+.TP
+.B send
+Act as if the selected text, or the snarf buffer if there is no selection, was typed in the input entry.
+
+.SH INPUT
+The input entry accepts most standard Inferno Tk bindings, but also has a vi-like editing mode inspired by
+.L "set -o vi"
+found in various korn shells.
+Below, the modification and motion commands are described summarily.
+Familiarity with editing in vi is assumed.
+Although not further documented, many commands accept numeric repeat modifiers.
+Vi-mode is indicated by a
+.L [
+to the left of the input entry.
+.TP
+.BR [iIaA]
+Change to insert mode.
+.TP
+.BR [sSC] " and " cc " or " c<motion>
+Substitute (delete text and change to insert mode).
+.TP
+.BR r<char>
+Replace character under cursor by
+.IR char .
+.TP
+.BR Y " or " yy " or " y<motion>
+Yank text to the internal buffer.
+.TP
+.BR p " or " P
+Paste text from the internal buffer.
+The internal buffer is set by the yank command and to text deleted by modification commands.
+.TP
+.BR .
+Repeat previous command (insertions cannot be repeated).
+.TP
+.BR u " and " ^r
+Undo and redo changes, multiple levels implemented.
+.TP
+.BR j " and " k
+Navigate through command input history.
+Only commands (not input for running commands) are stored in history.
+.TP
+.BR <repeat>G " or " <repeat>gg
+Jump to position
+.I repeat
+in the command/input history.
+.TP
+.BR D " or " dd " or " d<motion>
+Delete text.
+.TP
+.BR x " or " X
+Delete character under or before cursor.
+
+.PP
+The remainder are motion commands, they only change the cursor and can act as modifiers for modification commands.
+.TP
+.B ^
+To first non-blank of line.
+.TP
+.B 0
+To first character of line.
+.TP
+.B $
+To last cursor position of line.
+.TP
+.B [wWeEbB]
+Navigate words.
+.LR [wWeE]
+move forward,
+.LR [bB]
+backward.
+.LR [wW]
+stop before a new word,
+.LR [eE]
+stop after a new word.
+.LR [web]
+consider a words to be separated by whitespace or punctuation.
+.LR [WEB]
+consider words to be separated only by whitespace.
+.TP
+.B h
+Move one character left.
+.TP
+.B l
+Move one character right.
+.TP
+.B "<repeat>|"
+Move to character
+.IR repeat .
+.TP
+.B %
+Jump to matching closing or opening character, one of
+.LR [{(]}) ,
+taking nesting into account.
+
+.SH MOUSE
+Chording works in the text areas and the input entry.
+Chording in the input entry switches to insert mode and records the input entry text before the chord, for undo/redo.
+Plumbing with button3 is supported too.
+The selection or word under the mouse release is plumbed, taking off a trailing colon (from separating file names with line numbers from an error message) when an initial plumb message did not find a destination.
+.PP
+If the path to be plumbed is a directory, the command
+.L "cd $dir && lc"
+is executed instead.
+If a command is already running, the new command is started in a new instance of
+.IR wm/run .
+
+.SH SOURCE
+/appl/wm/run.b
+.SH SEE ALSO
+.IR sh (1),
+.IR wm-sh (1),
+.IR lc (1),
+.IR mc (1),
+.IR find (1).

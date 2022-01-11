@@ -3,32 +3,32 @@ load std
 load arg
 
 user = ''
-args  := $*
+args := $*
 
 (arg
 	u+ {user=$arg}
 	- $args)
 
-## set user
-if {test -f /env/user} {
-	echo -n $user >/env/user
-}
-
-## bind and configure homedir, setup scripts
 if {test -f /env/emuroot} {
+	## bind homedir
 	bind '#U*/home' /usr
-	if {test -f /env/user} {
-		echo -n /usr/^$user >/env/home
+	## set user home
+	home = /usr/^$"user
+	if {test -d $"home} {
 		cd $home
+		## setup scripts
+		## run tomorc or wm/qwm
+		if {test -f $home/lib/tomorc} {
+			echo running $home/lib/tomorc >[1=2]
+			env >[1=2]
+			@ $home/lib/tomorc
+		} {
+			env >[1=2]
+			@ wm/qwm /lib/qwmsetup
+		}
+	} {
+		echo '[tomo-init] /env/home is missing!' $"user $"home >[1=2]
+		ls /usr >[1=2]
 	}
 }
 
-## run tomorc or wm/qwm
-if {test -f $home/lib/tomorc} {
-	echo running $home/lib/tomorc >[1=2]
-	env >[1=2]
-	@ $home/lib/tomorc
-} {
-	env >[1=2]
-	@ wm/qwm /lib/qwmsetup
-}
