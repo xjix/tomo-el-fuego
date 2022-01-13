@@ -1,0 +1,27 @@
+emu -c1
+bind '#U*/n/c' /n/c
+bind '#U*/home' /usr
+cd
+cd src/attrfs/appl/cmd
+#mount {./attrfs -dD ../../audiodb2 path title,artist,album,year,genre comment,path} /mnt/attr &
+time mount {./attrfs -D /usr/mjl/audiodb path title,artist,album,year,genre comment,path} /mnt/attr
+
+ls /mnt/attr
+cat /mnt/attr/attrs
+cat /mnt/attr/keys
+</mnt/attr/clone {
+	dir=/mnt/attr/^`{read}
+	ls -l $dir
+	#echo 'artist Bad Religion'>>$dir/pick &
+	#cat $dir/path
+	#cat $dir/path
+	#cat $dir/genre
+	cat $dir/artist
+} &
+
+</mnt/attr/clone {
+	dir=/mnt/attr/^`{read}
+	<$dir {sleep 10} &
+	ls -lq /mnt/attr
+	ls -lq $dir
+}

@@ -1,0 +1,2 @@
+#!/dis/sh.dis
+./pick -c -b 'set playlist' {cat path >/mnt/play/list} -b 'add to playlist' {cat path >>/mnt/play/list} -b 'playlist' {plumb -d edit /mnt/play/list} -b 'play' {echo play >/mnt/play/ctl} -b 'stop' {echo stop >/mnt/play/ctl} artist album title
