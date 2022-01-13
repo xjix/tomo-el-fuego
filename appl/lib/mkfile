@@ -166,6 +166,7 @@ TARG=\
 	workdir.dis\
 	writegif.dis\
 	xml.dis\
+	zip.dis\
 
 MODULES= \
 	bittorrentpeer.m\
@@ -237,6 +238,7 @@ SYSMODULES= \
 	volume.m\
 	watchvars.m\
 	wmlib.m\
+	zip.m\
 
 DISBIN=$ROOT/dis/lib
 

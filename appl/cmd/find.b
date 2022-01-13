@@ -28,7 +28,7 @@ implement Find;
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 # For more information, please refer to <http://unlicense.org/>
-# <https://src.xj-ix.luxe/inferno-find>
+# <https://source.heropunch.luxe/System/9/inferno-find>
 # <https://github.com/mjl-/find>
 
 include "sys.m";

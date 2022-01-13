@@ -78,6 +78,7 @@ TARG=\
 	ftpfs.dis\
 	getauthinfo.dis\
 	gettar.dis\
+	getzip.dis\
 	gif2bit.dis\
 	grep.dis\
 	gunzip.dis\
@@ -96,6 +97,7 @@ TARG=\
 	look.dis\
 	ls.dis\
 	lstar.dis\
+	lszip.dis\
 	m4.dis\
 	man2html.dis\
 	man2txt.dis\
@@ -123,6 +125,7 @@ TARG=\
 	prof.dis\
 	ps.dis\
 	puttar.dis\
+	putzip.dis\
 	pwd.dis\
 	ramfile.dis\
 	randpass.dis\
@@ -195,6 +198,8 @@ TARG=\
 	xd.dis\
 	yacc.dis\
 	zeros.dis\
+	zipfs.dis\
+	zipstream.dis\
 
 MODULES=\
 
@@ -237,6 +242,7 @@ SYSMODULES=\
 	util0.m\
 	webget.m\
 	workdir.m\
+	zip.m\
 
 DISBIN=$ROOT/dis
 
