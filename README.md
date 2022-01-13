@@ -1,35 +1,26 @@
 # tomo el fuego
 
-> tomo is a rapidly evolving reserch project, use at your own risk.
-
-tomo facilitates communication and information sharing in a dynamic environment
-with severe constraints and intense challenges: deep space and the astral plane.
-the companion application << star cult >> provides a rich simulated environment
-for experimenting with safe and engaging interface design.
-
-## what are the applications?
-
-flying planes and controlling musical instruments i guess. later, drone swarm
-coordination (using ad-hoc mesh) to control a cloud of synthetic butterflies.
-flight controllers for LEO, space, and astral missions.
-
-## design and lineage
-
 tomo is an inferno distribution.
 
-inferno represents services and resources in a file-like name hierarchy.
-programs access them using only the file operations open, read/write, and close.
-'files' are not just stored data, but represent devices, network and protocol
-interfaces, dynamic data sources, and services. the approach unifies and
-provides basic naming, structuring, and access control mechanisms for all system
-resources. a single file-service protocol (the same as Plan 9's 9P) makes all
-those resources available for import or export throughout the network in a
-uniform way, independent of location. an application simply attaches the
-resources it needs to its own per-process name hierarchy ('name space').
+## [UNIX] booting up
 
-inferno can run 'native' on various ARM, PowerPC, SPARC and x86 platforms but
-also 'hosted', under an existing operating system (including AIX, FreeBSD, IRIX,
-Linux, MacOS X, Plan 9, and Solaris), again on various processor types.
+customize this script to get started from unix.
+
+```
+#!/bin/sh
+## locations
+iroot=/opt/tomo
+emu_cmd="$iroot/Linux/386/bin/emu"
+## resolutions
+emu_display=800x480
+## jit level
+### c > 0 has issues on some systems that i use
+emu_jit_level=0
+## envs
+EMU_OPTS="-r$iroot -c$emu_jit_level -g$emu_display"
+EMU_INIT="sh -c '/dis/tomo-init -u `whoami`'"
+exec $emu_cmd $EMU_OPTS $EMU_INIT
+```
 
 ## see also
 
