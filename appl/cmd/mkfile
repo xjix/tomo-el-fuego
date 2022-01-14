@@ -187,6 +187,7 @@ TARG=\
 	vacfs.dis\
 	vacget.dis\
 	vacput.dis\
+	#vacsrv.dis\
 	wav2iaf.dis\
 	wc.dis\
 	webgrab.dis\
