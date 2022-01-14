@@ -23,6 +23,7 @@ FILES = \
 	port.ps \
 	hotchips.ps \
 	install.ps \
+	ventisrv-fileformat.ps\
 
 DIRS = \
 	limbo \
@@ -52,6 +53,8 @@ dirs:V:	$FILES $DIRS mkfile fonts
 
 %.ps:D:	%.ms
 	{ echo $PRE; cat $stem.ms } | tbl | troff -mpm | lp -dstdout > $target
+	# for use with p9p:
+	#cat $stem.ms | 9 tbl | 9 troff -ms -Tutf | tr2post | psfonts >$target
 
 gridinstall.ps:D:	gridinstall.ms
 	PRE=''

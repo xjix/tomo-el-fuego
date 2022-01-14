@@ -1,0 +1,29 @@
+<../../../mkconfig
+
+TARG=\
+	copy.dis\
+	get.dis\
+	parse.dis\
+	ping.dis\
+	put.dis\
+	read.dis\
+	stream.dis\
+	sync.dis\
+	write.dis\
+
+SYSMODULES=\
+	arg.m\
+	bufio.m\
+	daytime.m\
+	dial.m\
+	draw.m\
+	env.m\
+	keyring.m\
+	string.m\
+	sys.m\
+	vac.m\
+	venti.m\
+
+DISBIN=$ROOT/dis/venti
+
+<$ROOT/mkfiles/mkdis

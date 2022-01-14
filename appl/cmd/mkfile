@@ -188,6 +188,10 @@ TARG=\
 	vacget.dis\
 	vacput.dis\
 	#vacsrv.dis\
+	ventry.dis\
+	vcache.dis\
+	vtest.dis\
+	ventisrv.dis\
 	wav2iaf.dis\
 	wc.dis\
 	webgrab.dis\
@@ -241,6 +245,8 @@ SYSMODULES=\
 	tkclient.m\
 	url.m\
 	util0.m\
+	vac.m\
+	venti.m\
 	webget.m\
 	workdir.m\
 	zip.m\

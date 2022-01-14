@@ -234,6 +234,7 @@ SYSMODULES= \
 	template.m\
 	url.m\
 	util0.m\
+	vac.m\
 	venti.m\
 	volume.m\
 	watchvars.m\
