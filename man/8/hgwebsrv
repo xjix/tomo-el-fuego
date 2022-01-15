@@ -1,0 +1,57 @@
+.TH hgwebsrv 8
+.SH NAME
+hg/websrv \- serve mercurial http pull protocol
+.SH SYNOPSIS
+.B hg/websrv
+[
+.B -d
+] [
+.B -u
+.I baseurl
+]
+.I root
+[
+.I repo1 ...
+]
+.SH DESCRIPTION
+.B Websrv
+serves the mercurial pull protocol over http.  This protocol helps
+pull updates from a remote mercurial repository with few requests and in a
+bandwidth-efficient manner.
+The mercurial repositories in
+.I root
+are served.  This is typically
+.I /n/hg
+containing one or more mounted hg/fs'es.
+If no explicit repositories to allow are specified, all repositories are allowed.
+Http access from browsers get a message that there is no html front-end, option
+.B -u
+can change this.
+.PP
+Options:
+.TP
+.B -d
+Print debugging information.
+.TP
+.BI -u " baseurl"
+In responses to browsers, mention that a html front-end exists at the
+concatenation of baseurl and the repository name.
+.PP
+.SH EXAMPLES
+Start a web server to serve the repositories in
+.IR /n/hg .
+.EX
+ip/shttpd -c / {hg/websrv -d /n/hg} GET .
+.EE
+.SH SOURCE
+.B /appl/cmd/cgi/websrv.b
+.br
+.B /appl/lib/mercurial.b
+.br
+.B /appl/lib/mercurialwire.b
+.SH SEE ALSO
+.IR hgfs (4)
+.SH BUGS
+Pushing changes to the server is not (yet) implemented.
+.br
+The "unbundle" and "stream_out" commands are not implemented.

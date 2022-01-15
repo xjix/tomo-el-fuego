@@ -1,0 +1,135 @@
+.TH hgfs 4
+.SH NAME
+hg/fs \- mount mercurial repository
+.SH SYNOPSIS
+mount {
+.B hg/fs
+[
+.B -Dd
+] [
+.B -T
+.I revcache
+] [
+.B -h
+.I path
+]
+} mtpt
+.SH DESCRIPTION
+.B Hg/fs
+reads a mercurial repository and exports its contents over styx.  It allows walking to the files of any revision, read the commit (log) message or manifest for any revision, or read a .tgz snapshot of any revision.  Revisions are either numbers, (partial) ``nodeid''s, tags, branches (their tips) or the special name ``tip''.
+.SS Options
+.TP
+.B -D
+Print styx traces to standard error.
+.TP
+.B -d
+Print debugging messages, a second
+.B -d
+prints more messages.
+.TP
+.BI -T " revcache"
+Set maximum size of cache for the internal representation of a tree of files for a revision.
+.I Revcache
+is the maximum number of such structures, independent of size in bytes.
+The default is 64.
+.TP
+.BI -h " repopath"
+Use the repository at 
+.IR repopath .
+Otherwise,
+.B hg/fs
+looks for a directory
+.BI .hg ,
+first in the current directory and then up towards the root of the file system.
+.SS Files
+.TP
+.B lastrev
+Read latest revision.
+.TP
+.BI files/ n / ...
+Access file hierarchy of revision
+.IR n .
+.TP
+.B changes/...
+For each file, read the revisions the file was changed in.  Each
+revision is on a separate line with 7 fields:
+.I "repository revision" ,
+the file's
+.I "revision"
+and
+.I "nodeid" ,
+first parent's
+.I revision
+and
+.I nodeid
+and second parent's
+.I revision
+and
+.I nodeid .
+Absent parents are indicated by revision ``-1'' and an empty nodeid.
+.TP
+.BI log/ n
+Read the log message for revision
+.IR n .
+.TP
+.BI manifest/ n
+Read the manifest for revision
+.IR n .
+.TP
+.BI manifestfull/ n
+Like
+.B manifest/
+but lines have the nodeid for the path as first token.
+.TP
+.BI tgz/ reponame-n.tgz
+Read the .tgz for revision
+.IR n .
+As a special case, n can be ``latest''.  It has the same semantics as ``tip''.
+.TP
+.BI branches
+Read the branches.  One per line.  Each line has three space-separated
+fields:  nodeid, branch name, and tip revision of the branch.
+.TP
+.BI tags
+Read the branches.  One per line.  Each line has three space-separated
+fields:  nodeid, tag name, and revision of the tag.
+
+.PP
+Symbolic revisions (such as ``tip'') are evaluated to a revision number when the
+revision is walked to.  This means that a walk to ``tip'' and a
+subsequent commit to the repository will not update the open file.
+.PP
+For brevity, listing the contents of
+.BR files ", " log ", " manifest " and " manifestfull
+will only list files with the names of tags, tips of branches (in the form ``branch-tip''),
+and ``tip'', not all revision numbers.  All revisions can be walked
+to though.
+A
+.IR stat (2)
+on these files will show the revision number as the name.
+.PP
+Listing the contents of
+.B tgz/
+returns similar files:
+.IR reponame-branch-rev.tgz ,
+.IR reponame-tag.tgz ,
+and
+.IR reponame-rev.tgz (for
+the tip), where
+.I reponame
+is the name of the repository (the name of the directory where
+.I hg/
+resides in),
+.I branch-rev
+the numeric revision of the tip of each branch, and
+.I tag
+as the name of each tag.
+Again, any revision can be read, it is just not listed).
+
+.SH SOURCE
+.B /appl/cmd/hg/fs.b
+.br
+.B /appl/lib/mercurial.b
+.br
+.SH SEE ALSO
+.IR hgwebsrv (8)

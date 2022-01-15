@@ -1,0 +1,34 @@
+<../../../mkconfig
+
+TARG=\
+	delta.dis\
+	printconfig.dis\
+	printdelta.dis\
+	applydelta.dis\
+	mkdelta.dis\
+	printchangegroup.dis\
+
+MODULES=\
+	../../lib/mercurialwire.m\
+	../../lib/mercurialremote.m\
+	../../lib/bdiff.m\
+
+SYSMODULES=\
+	mercurial.m\
+	arg.m\
+	bufio.m\
+	daytime.m\
+	draw.m\
+	filter.m\
+	keyring.m\
+	lists.m\
+	string.m\
+	styx.m\
+	styxservers.m\
+	sys.m\
+	tables.m\
+	filtertool.m\
+
+DISBIN=$ROOT/dis/hg
+
+<$ROOT/mkfiles/mkdis

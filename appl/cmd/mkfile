@@ -4,8 +4,10 @@ DIRS=\
 	auth\
 	auxi\
 	avr\
+	cgi\
 	disk\
 	fs\
+	hg\
 	install\
 	ip\
 	lego\
