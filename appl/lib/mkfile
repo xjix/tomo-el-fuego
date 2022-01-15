@@ -127,6 +127,9 @@ TARG=\
 	smtp.dis\
 	sort.dis\
 	ssl.dis\
+	sshfmt.dis\
+	sshlib.dis\
+	sftp.dis\
 	string.dis\
 	strinttab.dis\
 	styx.dis\
@@ -177,6 +180,9 @@ MODULES= \
 	mercurialwire.m\
 	mercurialremote.m\
 	bdiff.m\
+	sshfmt.m\
+	sshlib.m\
+	sftp.m\
 
 SYSMODULES= \
 	asn1.m\
