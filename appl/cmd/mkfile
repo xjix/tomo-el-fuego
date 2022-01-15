@@ -86,6 +86,7 @@ TARG=\
 	gunzip.dis\
 	gzip.dis\
 	hget.dis\
+	hgweb.dis\
 	idea.dis\
 	import.dis\
 	iostats.dis\
