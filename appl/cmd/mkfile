@@ -7,7 +7,7 @@ DIRS=\
 	cgi\
 	disk\
 	fs\
-	hg\
+	#hg\
 	install\
 	ip\
 	lego\
@@ -87,7 +87,7 @@ TARG=\
 	gunzip.dis\
 	gzip.dis\
 	hget.dis\
-	hgweb.dis\
+	#hgweb.dis\
 	hexe.dis\
 	idea.dis\
 	import.dis\
@@ -215,9 +215,9 @@ TARG=\
 	zipstream.dis\
 
 MODULES=\
-	../lib/sshfmt.m\
-	../lib/sshlib.m\
-	../lib/sftp.m\
+	#sshfmt.m\
+	#sshlib.m\
+	#sftp.m\
 
 SYSMODULES=\
 	arg.m\
