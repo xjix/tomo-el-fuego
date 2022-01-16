@@ -24,7 +24,7 @@ exec $emu_cmd $EMU_OPTS $EMU_INIT
 
 ## see also
 
-* [tomo wiki](http://xjix.luxe/wiki/tomo/)
+* [tomo wiki](http://xj-ix.luxe/wiki/tomo/)
 * [chaotic software](http://xj-ix.luxe/wiki/chaotic-software/)
 * [bbnet](http://xj-ix.luxe/wiki/bbnet/)
 * [heropunch kooperativo](http://heropunch.luxe/)

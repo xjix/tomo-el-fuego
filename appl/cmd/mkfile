@@ -4,8 +4,10 @@ DIRS=\
 	auth\
 	auxi\
 	avr\
+	cgi\
 	disk\
 	fs\
+	hg\
 	install\
 	ip\
 	lego\
@@ -62,6 +64,7 @@ TARG=\
 	disdump.dis\
 	dossrv.dis\
 	du.dis\
+	decenc.dis\
 	echo.dis\
 	ed.dis\
 	emuinit.dis\
@@ -84,6 +87,7 @@ TARG=\
 	gunzip.dis\
 	gzip.dis\
 	hget.dis\
+	hgweb.dis\
 	hexe.dis\
 	idea.dis\
 	import.dis\
@@ -154,6 +158,9 @@ TARG=\
 	styxmon.dis\
 	styxlisten.dis\
 	sum.dis\
+	ssh.dis\
+	sftpfs.dis\
+	sshpubkey.dis\
 	tail.dis\
 	tarfs.dis\
 	tclsh.dis\
@@ -208,6 +215,9 @@ TARG=\
 	zipstream.dis\
 
 MODULES=\
+	../lib/sshfmt.m\
+	../lib/sshlib.m\
+	../lib/sftp.m\
 
 SYSMODULES=\
 	arg.m\

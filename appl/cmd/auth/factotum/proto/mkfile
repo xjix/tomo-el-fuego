@@ -5,6 +5,8 @@ TARG=\
 	p9any.dis\
 	pass.dis\
 	rsa.dis\
+	ssh-rsa.dis\
+	ssh-dsa.dis\
 
 SYSMODULES=\
 	factotum.m\

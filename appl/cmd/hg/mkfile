@@ -1,0 +1,44 @@
+<../../../mkconfig
+
+TARG=\
+	get.dis\
+	tar.dis\
+	log.dis\
+	fs.dis\
+	status.dis\
+	readrevlog.dis\
+	update.dis\
+	id.dis\
+	pull.dis\
+	verify.dis\
+	add.dis\
+	rm.dis\
+	revert.dis\
+	heads.dis\
+	commit.dis\
+	manifestdiff.dis\
+
+MODULES=\
+	../../lib/mercurialremote.m\
+	../../lib/bdiff.m\
+
+SYSMODULES=\
+	mercurial.m\
+	arg.m\
+	bufio.m\
+	daytime.m\
+	draw.m\
+	filter.m\
+	keyring.m\
+	lists.m\
+	string.m\
+	styx.m\
+	styxservers.m\
+	sys.m\
+	tables.m\
+	filtertool.m\
+	util0.m\
+
+DISBIN=$ROOT/dis/hg
+
+<$ROOT/mkfiles/mkdis

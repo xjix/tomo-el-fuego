@@ -23,6 +23,7 @@ TARG=\
 	secstore.dis\
 	signer.dis\
 	verify.dis\
+	sshkeys.dis\
 
 SYSMODULES=\
 	arg.m\

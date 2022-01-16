@@ -1,0 +1,19 @@
+<h1 id="%tabid%">%tabtitle%</h1>
+<div class="navchange">
+<a href="../log/full/%repo%/tip">full log</a>
+%if set oldrev%
+<a href="../log/short/%repo%/%oldrev%">-20</a>
+%end%
+</div>
+
+<table class="status">
+	<thead>
+<tr>
+	<th class="rev">rev</th>
+	<th class="hnodeid">nodeid</th>
+	<th class="when">when</th>
+	<th class="diff">diff</th>
+	<th class="why">why</th>
+</tr>
+	</thead>
+	<tbody>

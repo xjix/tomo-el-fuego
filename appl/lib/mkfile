@@ -79,6 +79,10 @@ TARG=\
 	memfs.dis\
 	mpeg.dis\
 	msgio.dis\
+	mercurial.dis\
+	mercurialwire.dis\
+	mercurialremote.dis\
+	bdiff.dis\
 	nametree.dis\
 	names.dis\
 	netstr.dis\
@@ -123,6 +127,9 @@ TARG=\
 	smtp.dis\
 	sort.dis\
 	ssl.dis\
+	sshfmt.dis\
+	sshlib.dis\
+	sftp.dis\
 	string.dis\
 	strinttab.dis\
 	styx.dis\
@@ -170,6 +177,12 @@ TARG=\
 
 MODULES= \
 	bittorrentpeer.m\
+	mercurialwire.m\
+	mercurialremote.m\
+	bdiff.m\
+	sshfmt.m\
+	sshlib.m\
+	sftp.m\
 
 SYSMODULES= \
 	asn1.m\
@@ -204,6 +217,7 @@ SYSMODULES= \
 	man.m\
 	mhttp.m\
 	mpeg.m\
+	mercurial.m\
 	netstr.m\
 	newns.m\
 	ohttp.m\
