@@ -1,5 +1,9 @@
-# This is free and unencumbered software released into the public domain.
-# see /lib/legal/UNLICENSE
+# the author disclaims copyright to this source code.  in place of
+# a legal notice, here is a blessing:
+#
+#    may you do good and not evil.
+#    may you find forgiveness for yourself and forgive others.
+#    may you share freely, never taking more than you give.
 implement Testtemplate2;
 
 include "sys.m";

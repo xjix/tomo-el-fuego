@@ -1,5 +1,10 @@
-# This is free and unencumbered software released into the public domain.
-# see /lib/legal/UNLICENSE
+# The author disclaims copyright to this source code.  In place of
+# a legal notice, here is a blessing:
+#
+#    May you do good and not evil.
+#    May you find forgiveness for yourself and forgive others.
+#    May you share freely, never taking more than you give.
+
 # testbitarray n8 s0 s1 s2 p s3 s4 s5 s6 s7 p
 # testbitarray n8 s0 s1 s2 p s3 s4 s5 s6 s7 p
 # testbitarray n8 s0 p s1 p u0 p
