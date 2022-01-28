@@ -1,0 +1,11 @@
+pipeline:
+  build-Linux-386:
+    image: debian:stable-slim
+    commands:
+      - dpkg --add-architecture i386
+      - apt update
+      - apt install -y binutils:i386 gcc:i386 libc6-dev-i386 libx11-dev:i386 libxext-dev:i386
+      - ./tomo-dev.sh build-Linux `pwd`
+      - rm -rf .git .hg
+      - zip -r "tomo-Linux-386-$CI_COMMIT_SHA--$CI_BUILD_STARTED.zip" *
+      - ls
