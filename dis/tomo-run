@@ -1,0 +1,25 @@
+#!/dis/sh
+load std
+load arg
+
+user = ''
+wdir = ''
+task = ''
+args := $*
+
+(arg
+	u+ {user=$arg}
+	w+ {wdir=$arg}
+	c+ {task=$arg}
+	- $args)
+
+if {test -f /env/emuroot} {
+	## bind homedir
+	bind '#U*/home' /usr
+	## set user home
+	home = /usr/^$"user
+	cd $wdir
+	# READY
+	$task
+}
+
