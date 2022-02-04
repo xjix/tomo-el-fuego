@@ -1,5 +1,28 @@
-build-Linux-386:
+Linux-386--debian:
   image: debian:stable-slim
+  stage: build
+  variables:
+    syshost: Linux
+    objtype: 386
+  before_script:
+    - dpkg --add-architecture i386
+    - apt update
+    - apt install -y binutils:i386 gcc:i386 libc6-dev-i386 libx11-dev:i386 libxext-dev:i386
+  script:
+    - ./tomo-dev.sh build-Linux `pwd`
+  artifacts:
+    name: "tomo-$syshost-$objtype-$CI_COMMIT_SHORT_SHA"
+    expire_in: 1 week
+    paths:
+      - ./*
+      - ./**
+    exclude:
+      - .git
+      - .git/**
+      - .hg
+      - .hg/**
+Linux-386--ubuntu:
+  image: ubuntu:bionic
   stage: build
   variables:
     syshost: Linux
