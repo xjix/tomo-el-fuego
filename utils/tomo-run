@@ -1,0 +1,18 @@
+#!/bin/sh
+## locations
+iroot=${TOMO_IROOT:-"/opt/tomo"}
+emu_cmd="$iroot/Linux/386/bin/emu"
+emu_display=800x480
+## jit level
+### c > 0 has issues on some systems that i use
+emu_jit_level=0
+## envs
+EMU_OPTS="-r$iroot -c$emu_jit_level -g$emu_display -pheap=32M"
+UNAME=`whoami`
+WDIR=`pwd | sed "s,^$HOME,/usr/$UNAME,g"`
+## 🚀
+set -x
+exec $emu_cmd $EMU_OPTS /dis/tomo-run \
+	-u $UNAME \
+	-w $WDIR \
+	-c "$@"

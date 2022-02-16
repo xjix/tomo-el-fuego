@@ -7,8 +7,8 @@ innovative work of plan9 and inferno, tomo is an attempt to develop a novel
 information-centring networking stack and an accompanying graphical application
 runtime.
 
-=> http://xj-ix.luxe/wiki/tomo/ tomo wiki
-=> http://xj-ix.luxe/wiki/bbnet/
+=> gemini://sunshinegardens.org/~xj9/wiki/tomo/ tomo wiki
+=> gemini://sunshinegardens.org/~xj9/wiki/bbnet/ bbnet wiki
 => https://www.vitanuova.com/inferno/ inferno
 
 ## [UNIX] booting up
@@ -32,6 +32,6 @@ exec $emu_cmd $EMU_OPTS /dis/tomo-init -u `whoami`
 
 ## see also
 
-=> http://heropunch.luxe heropunch kooperativo
+=> gemini://sunshinegardens.org/~xj9/wiki/heropunch-cooperative heropunch kooperativo
 => ./NOTICE license information
 

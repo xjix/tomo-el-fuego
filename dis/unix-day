@@ -1,0 +1,8 @@
+#!/dis/sh
+## # unix long count
+## * unit-day = 86400 seconds
+## * unix-epoch = seconds since 1970-01-01T00:00:00Z
+## * metric-day = round(unix-epoch / unit-day)
+load expr
+load echo
+echo ${expr `{date -n} 86400 /}

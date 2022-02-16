@@ -1,0 +1,59 @@
+#!/dis/sed -f
+# inferno sed is not yet complete enough to execute this script!
+
+# escape html
+
+s/&/\&amp;/g
+s/</\&lt;/g
+s/>/\&gt;/g
+s/\"/\&#34;/g
+s/\'/\&#39;/g
+
+# /A/,/B/ is sed syntax for "match a region marked by delimiters /A/
+# and /B/ where A and B are regex expressions". working with delimiters
+# is a little funky because sed normally only understands lines. symmetry
+# breaking is really important to avoid weird behavior.
+#
+# {} applies a block of sed expressions to the selected pattern space, in
+# this case, the region matched by the delimiters.
+
+/^```/,/^```$/{
+	s,^(.*)$,<code aria-hidden=true>\1</code>,g
+}
+
+s,^---+$,<hr />,g
+
+# transform heading line types
+
+s,^#[ 	]*?([^#].+)$,<a role=heading aria-level=1><span aria-hidden=true># </span>\1</a>,g
+s,^##[ 	]*?([^#].+)$,<a role=heading aria-level=2><span aria-hidden=true>## </span>\1</a>,g
+s,^###[ 	]*?([^#].+)$,<a role=heading aria-level=3><span aria-hidden=true>### </span>\1</a>,g
+
+# transform link line types
+
+s,^=&gt;[ 	]*?([^ 	]+)$,<a role=link href="\1"><span aria-hidden=true>=\&gt; </span>\1</a>,g
+s,^=&gt;[ 	]*?([^ 	]+?)[ 	]+(.+)$,<a role=link href="\1"><span aria-hidden=true>=\&gt; </span>\2</a>,g
+
+s,^<a role=link (.+)>([0-9]+)-([0-9][0-9])-([0-9][0-9])[ 	]+-[ 	]+([^<]+)</a>$,<a role=link \1><time datetime=\2-\3-\4>\2-\3-\4</time> - \5</a>,g
+
+# transform blockquote line type
+
+s,^&gt;[ 	]*?(.+)$,<blockquote>\1</blockquote>,g
+
+# transform list line type
+
+s,^[*][ 	]*?(.+)$,<span role=listitem><span aria-hidden=true>\&#42; </span>\1</span>,g
+
+# inline images
+
+s,<a role=link href="([^ ]+?\.)(gif|jpe?g|png|svg|bmp)">.+</span>(.+)</a>,<img src="\1\2" alt="\3">,g
+
+# code sections
+
+/^<code aria-hidden=true>```[^`]+<\/code>$/,/^<code aria-hidden=true>```<\/code>$/{
+	s,^<code aria-hidden=true>```([a-z0-9]+)</code>$,<code role=figure class="language-\1" aria-hidden=true>,g
+	s,^<code aria-hidden=true>```([^`]+)</code>$,<code role=figure aria-label="\1" aria-hidden=true>,g
+	s,^<code aria-hidden=true>(.*)</code>$,\1,g
+	s,^```$,</code>,g
+}
+
