@@ -16,7 +16,7 @@
 # libc6-dev \
 # libx11-dev \
 # libxext-dev \
-# mercurial
+# fossil
 #
 # cd /opt
 # hg clone http://source.heropunch.luxe/tomo/
@@ -37,7 +37,7 @@
 # libc6-dev-i386 \
 # libx11-dev:i386 \
 # libxext-dev:i386 \
-# mercurial
+# fossil
 #
 case "${1}" in
 	make-chroot)
