@@ -14,6 +14,7 @@ CFILES = des.c desmodes.c desECB.c desCBC.c des3ECB.c des3CBC.c\
 	rsagen.c rsafill.c rsaencrypt.c rsadecrypt.c rsaalloc.c rsaprivtopub.c \
 	eggen.c egencrypt.c egdecrypt.c egalloc.c egprivtopub.c egsign.c egverify.c \
 	dsagen.c dsaalloc.c dsaprivtopub.c dsasign.c dsaverify.c \
+	tweetnacl.c \
 
 ALLOFILES=${CFILES:%.c=%.$O}
 
@@ -22,6 +23,7 @@ OFILES=	`{$SHELLNAME ./reduce-$SHELLTYPE $O $TARGMODEL-$OBJTYPE $ALLOFILES }
 
 HFILES=\
 	$ROOT/include/libsec.h\
+	$ROOT/include/tweetnacl.h\
 	$ROOT/libmp/port/os.h\
 
 CFLAGS=$CFLAGS -I../../libmp/port
