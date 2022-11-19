@@ -4,40 +4,29 @@
 #
 ## build/release process
 #
-# create and enter build chroot
+# from an existing checkout, create and enter build chroot
 #
+# ```
 # [sudo] ./tomo-dev.sh make-chroot /opt/tomo-dev-chroot
+# [sudo] ./tomo-dev.sh bind-chroot /opt/tomo-dev-chroot
 # [sudo] ./tomo-dev.sh enter-chroot /opt/tomo-dev-chroot
+# ```
 #
 # within chroot
 #
-# apt-get install -y \
-# gcc \
-# libc6-dev \
-# libx11-dev \
-# libxext-dev \
-# fossil
-#
-# cd /opt
-# hg clone http://source.heropunch.luxe/tomo/
-# cd tomo
+# ```
+# cd /opt/tomo
+# ./tomo-dev.sh setup-chroot
 # ./tomo-dev.sh release-Linux
+# ```
 #
 # exit chroot, upload release artifact somewhere
 #
 # scp /opt/tomo-dev-chroot/opt/tomo-$syshost-$objtype.tbz2 $release_target
 #
-## multilib notes:
+## multilib notes
 #
-### debian
-#
-# apt-get install -y \
-# binutils:i386 \
-# gcc:i386 \
-# libc6-dev-i386 \
-# libx11-dev:i386 \
-# libxext-dev:i386 \
-# fossil
+# see ci file.
 #
 case "${1}" in
 	make-chroot)
@@ -57,6 +46,25 @@ case "${1}" in
 		cp /etc/hosts $MY_CHROOT/etc/hosts
 		cp /proc/mounts $MY_CHROOT/etc/mtab
 		exec chroot $MY_CHROOT /bin/bash
+		;;
+	bind-chroot)
+		shift
+		MY_CHROOT=$1
+		mount --bind `pwd` $MY_CHROOT/opt/tomo
+		;;
+	bind-opt)
+		shift
+		mount --bind `pwd` /opt/tomo
+		;;
+	setup-chroot)
+		shift
+		apt-get update
+		apt-get install -y \
+			gcc \
+			libc6-dev \
+			libx11-dev \
+			libxext-dev \
+			fossil
 		;;
 	build)
 		shift
