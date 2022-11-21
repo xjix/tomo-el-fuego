@@ -56,8 +56,8 @@ menu System			'Task manager'		{wmrun wm/task}
 menu System			'Memory monitor'	{wmrun wm/memory}
 menu System			'About'			{wmrun wm/about}
 menu Social			'irc/tilde.chat'	{wmrun wm/irc /mnt/irc/tilde}
-menu Social			'hub/9p.zone'		{wmrun wm/gridchat -g 9p.zone -n $"user}
-#menu Social			'hub/heropunch.io'	{wmrun wm/gridchat -g heropunch.io -n $"user}
+menu Social			'hub/9p.zone'		{wmrun wm/gridchat -g 'tcp!chat.9p.zone!9990' -n $"user}
+#menu Social			'hub/heropunch.io'	{wmrun wm/gridchat -g 'tcp!chat.heropunch.io!9990' -n $"user}
 menu Misc			'Coffee'		{wmrun wm/coffee}
 menu Misc			'Colours'		{wmrun wm/colors}
 #menu Misc			'Winctl'		{wmrun wm/winctl}
