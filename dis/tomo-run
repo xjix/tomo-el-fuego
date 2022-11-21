@@ -20,6 +20,6 @@ if {test -f /env/emuroot} {
 	home = /usr/^$"user
 	cd $wdir
 	# READY
-	$task
+	$task $*
 }
 

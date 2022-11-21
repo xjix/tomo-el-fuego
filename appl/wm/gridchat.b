@@ -49,10 +49,10 @@ Cs: module
 t: ref Tk->Toplevel;
 wmctl: chan of string;
 
-gridaddress := "tcp!chat.9gridchan.org!9997";
-mountpoint := "/n/chat";
+gridaddress := "tcp!chat.9p.zone!9990";
+mountpoint := "/mnt/gridchat";
 channel := "chat";
-filename := "/tmp/test";
+filename := "/mnt/gridchat.txt";
 nick := "nickname";
 verbose := 0;
 dowarn := 0;
@@ -139,9 +139,11 @@ preinit(args: list of string)
 {
 	arg := load Arg Arg->PATH;
 	arg->init(args);
-	arg->setusage(arg->progname()+" [-v] [-n nick] [-c channel]");
+	arg->setusage(arg->progname()+" [-v] [-g gridaddr] [-n nick] [-c channel]");
 	while ((c := arg->opt()) != 0)
 		case c {
+			'g' =>
+				gridaddress = arg->earg();
 			'n' =>
 				nick = arg->earg();
 			'c' =>
@@ -346,7 +348,7 @@ mountgridchat()
 		fail(sprint("can't dial %s: %r", dest));
 	if (verbose)
 		sys->fprint(sys->fildes(2), "connected with %s\n", gridaddress);
-
+	sys->fprint(sys->fildes(2), "connected with %s %s\n", gridaddress, mountpoint);
 	if (sys->mount(c.dfd, nil, mountpoint, sys->MCREATE | sys->MREPL, nil) < 0)
 		fail("can't mount gridchat filesystem");
 	if (verbose)

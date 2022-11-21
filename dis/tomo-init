@@ -17,14 +17,18 @@ if {test -f /env/emuroot} {
 	if {test -d $"home} {
 		cd $home
 		## setup scripts
-		## run tomorc or wm/qwm
+		## run tomorc or default desktop
+		## alt desktop options:
+		## ```
+		## @ wm/qwm /lib/qwmsetup
+		## ```
 		if {test -f $home/lib/tomorc} {
 			echo running $home/lib/tomorc >[1=2]
 			env >[1=2]
 			@ $home/lib/tomorc
 		} {
 			env >[1=2]
-			@ wm/qwm /lib/qwmsetup
+			@ wm/wm wm/logon -u $"user
 		}
 	} {
 		echo '[tomo-init] /env/home is missing!' $"user $"home >[1=2]
