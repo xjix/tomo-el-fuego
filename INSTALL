@@ -1,4 +1,4 @@
-Installing hosted Inferno from source
+Installing hosted TomoElFuego from source
 
 Overview
 
@@ -42,12 +42,6 @@ be built when running on that platform.
 
 Build steps
 
-> ~xj9: so far my experience has been that inferno prefers being built in a
-> 32bit environment. i've had successful builds (though charon has some issues)
-> using a 32bit debian lxd container. i think this is overkill for building the
-> system though. a debian chroot via debootstrap seems like a more reasonable
-> option.
-
      All the libraries and executables can  be  built  in  a
 tree containing only the source code.  To do that for a sup-
 ported variant of hosted Inferno, on Unix or Plan 9, do  the
@@ -82,3 +76,21 @@ requires  the  executable  for    mk  to be available in the
 search path, since there is no  equivalent  of    makemk.sh.
 Otherwise  the procedure is the same.  On Plan 9, of course,
 the host system's normal version of  mk should be adequate.
+
+> ~xj9: so far my experience has been that Linux-386 prefers
+> being built in a 32bit  environment. tomo-dev.sh  includes
+> scripts to bootstrap a  32bit  chroot! mkconfig uses iroot,
+> syshost, and  objtype to  setup  the build  environment by
+> default. this is used for convenience, feel free to modify
+> mkconfig.
+
+```sh
+export iroot=$1
+export syshost=$2
+export objtype=$3
+export PATH=$iroot/$syshost/$objtype/bin:$PATH
+./makemk.sh
+mk nuke
+mk install
+```
+

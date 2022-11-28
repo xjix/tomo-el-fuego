@@ -1,0 +1,33 @@
+#!/usr/bin/env rc
+## locations
+iroot = /opt/tomo
+if (! ~ $TOMO_IROOT '') { iroot = $TOMO_IROOT }
+emu_cmd = $iroot^/Linux/386/bin/emu
+
+## setup display
+emu_display = 800x480
+if (! ~ $"TOMO_SCREEN '') {
+	emu_display = $"TOMO_SCREEN
+	echo '[X] TOMO_SCREEN' $emu_display
+}
+if not {
+	## assuming wmiv e.g. (h-35)
+	display_size = `{xrandr \
+		| 9 grep '\*' \
+		| 9 awk '{print $1}' \
+		| 9 sort \
+		| 9 head -n1 \
+		| 9 sed 's,x, ,g'}
+	emu_display = $display_size(1)^x^`{echo $display_size(2) 35 - f | 9 dc}
+	echo '[X] p‿v' $display_size $emu_display
+}
+
+## jit level
+emu_jit_level = 0
+if (! ~ $"TOMO_JIT '') { emu_jit_level = $TOMO_JIT }
+
+## envs
+EMU_OPTS = (-r$iroot -c$emu_jit_level -g$emu_display)
+
+## 🚀
+exec $emu_cmd ($EMU_OPTS) /dis/tomo-desktop -u $USER

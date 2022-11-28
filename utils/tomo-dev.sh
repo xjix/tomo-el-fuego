@@ -2,6 +2,15 @@
 # tomo-dev.sh(1) - dev utility scripts
 # ====================================
 #
+## dev process
+#
+# ```
+# [sudo] ./tomo-dev.sh make-chroot /opt/tomo-dev-chroot
+# [sudo] ./tomo-dev.sh bind-chroot /opt/tomo-dev-chroot
+# [sudo] ./tomo-dev.sh bind-checkout /opt/tomo
+# [sudo] ./tomo-dev.sh rebuild-chroot /opt/tomo-dev-chroot
+# ```
+#
 ## build/release process
 #
 # from an existing checkout, create and enter build chroot
@@ -52,9 +61,9 @@ case "${1}" in
 		MY_CHROOT=$1
 		mount --bind `pwd` $MY_CHROOT/opt/tomo
 		;;
-	bind-opt)
+	bind-checkout)
 		shift
-		mount --bind `pwd` /opt/tomo
+		mount --bind `pwd` ${1:-"/opt/tomo"}
 		;;
 	setup-chroot)
 		shift
@@ -102,8 +111,20 @@ case "${1}" in
 		$0 build $iroot $syshost $objtype
 		tar --exclude-vcs -C /opt/ -cvjf /opt/tomo-$syshost-$objtype-$build_id.tbz2 tomo
 		;;
+	upload-ci)
+		shift
+		# since we host on fossil, the release-upload script can be hosted using
+		# the ext feature so access can be managed in the usual way!
+		# https://fossil-scm.org/home/doc/trunk/www/serverext.wiki
+		artifact="$1"
+		curl -vSsf -m 360 \
+			-X POST \
+			--data-binary "@`abspath $artifact`" \
+			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
+		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"
+		echo TODO: print useful help
 		exit 1
 		;;
 esac

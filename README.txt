@@ -7,31 +7,11 @@ innovative work of plan9 and inferno, tomo is an attempt to develop a novel
 information-centring networking stack and an accompanying graphical application
 runtime.
 
-=> gemini://sunshinegardens.org/~xj9/wiki/tomo/ tomo wiki
-=> gemini://sunshinegardens.org/~xj9/wiki/bbnet/ bbnet wiki
-=> https://www.vitanuova.com/inferno/ inferno
-
-## [UNIX] booting up
-
-customize this script to get started from unix.
+=> ./NOTICE	license information
+=> ./INSTALL	build instruction
 
 ```
-#!/bin/sh
-## locations
-iroot=/opt/tomo
-emu_cmd="$iroot/Linux/386/bin/emu"
-## resolutions
-emu_display=800x480
-## jit level
-### c > 0 has issues on some systems that i use
-emu_jit_level=0
-## envs
-EMU_OPTS="-r$iroot -c$emu_jit_level -g$emu_display"
-exec $emu_cmd $EMU_OPTS /dis/tomo-init -u `whoami`
+./utils/tomo-dev.sh --help
 ```
 
-## see also
-
-=> gemini://sunshinegardens.org/~xj9/wiki/heropunch-cooperative heropunch kooperativo
-=> ./NOTICE license information
-
+# vi: ts=8
