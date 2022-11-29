@@ -20,6 +20,7 @@
 .cdf		application	x-netcdf	-
 .cpio		application	x-cpio		-
 .cpp		text		plain		-		# DOS C++ program
+.css		text		css		-		# html stylesheet
 .dat		text		plain		-		# AMPL et al.
 .diff		text		plain		-
 .dvi		application	x-dvi		-		# TeX output
@@ -41,11 +42,13 @@
 .htm		text		html		-
 .html		text		html		-
 .ief		image		ief		-		# [Mosaic]
+.ico		image		x-icon		-		# favicon
 .jfif		image		jpeg		-		# [Mosaic]
 .jfif-tbnl	image		jpeg		-		# [Mosaic]
 .jpe		image		jpeg		-		# [Mosaic]
 .jpeg		image		jpeg		-
 .jpg		image		jpeg		-
+.js		text		javascript	-		# ECMAscript
 .latex		application	x-latex		-		# [Mosaic]
 .ltx		application	x-latex		-
 .man		application	x-troff-man	-		# [Mosaic]
@@ -68,6 +71,7 @@
 .pl		text		plain		-		# [Mosaic]
 .pnm		image		x-portable-anymap	-	# [Mosaic]
 .ppm		image		x-portable-pixmap	-	# [Mosaic]
+.png		image		png			-	# Portable Network Graphic
 .ps		application	postscript	-
 .qt		video		quicktime	-		# [Mosaic]
 .r		text		plain		-		# ratfor program
@@ -77,12 +81,13 @@
 .rgb		image		x-rgb		-		# [Mosaic]
 .roff		application	x-troff		-		# [Mosaic]
 .rtf		application	rtf		-		# [Mosaic]
-.rtx		text		richtext 	-	# MIME richtext	  [Mosaic]
-.sh		application	x-shar		-
-.shar		application	x-shar		-
-.snd		audio		basic		-
+.rtx		text		richtext 	-		# MIME richtext	  [Mosaic]
+.sh		application	x-shar		-		
+.shar		application	x-shar		-		
+.snd		audio		basic		-		
 .sv4cpio	application	x-sv4cpio	-		# [Mosaic]
 .sv4crc		application	x-sv4crc	-		# [Mosaic]
+.svg		image		svg+xml		-		# vector graphic
 .t		application	x-troff		-		# [Mosaic]
 .tar		application	x-tar		-		# [Mosaic]
 .taz		application	x-tar		x-compress
@@ -101,6 +106,8 @@
 .txt		text		plain		-
 .ustar		application	x-ustar		-		# [Mosaic]
 .wav		audio		x-wav		-
+.woff		application	font-woff	-		# webfont 1
+.woff2		font		woff2		-		# webfont 2
 .wsrc		application	x-wais-source	-		# [Mosaic]
 .xbm		image		x-xbitmap	-		# X bitmap
 .xpm		image		x-xpixmap	-		# [Mosaic]
@@ -108,3 +115,4 @@
 .z		-		-		x-compress
 .Z		-		-		x-compress
 .zip		application	zip		-
+# vi: ts=8

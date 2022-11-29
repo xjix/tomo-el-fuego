@@ -94,3 +94,6 @@ libinterp/runt.h
 libinterp/sysmod.h
 libinterp/tkmod.h
 limbo/runt.h
+
+services/httpd/httpd.debug
+services/httpd/httpd.log

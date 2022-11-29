@@ -2,9 +2,8 @@ implement Httpd;
 
 include "sys.m";
 	sys: Sys;
-
-Dir: import sys;
-FD : import sys;
+	Dir: import sys;
+	FD : import sys;
 
 include "draw.m";
 
@@ -43,7 +42,7 @@ include "alarms.m";
 	alarms: Alarms;
 	Alarm: import alarms;
 
-# globals 
+# globals
 
 cache_size: int;
 port := "80";
@@ -62,7 +61,7 @@ usage()
 atexit(g: ref Private_info)
 {
 	debug_print(g,"At exit from httpd, closing fds. \n");
-	g.bin.close();	
+	g.bin.close();
 	g.bout.close();
 	g.bin=nil;
 	g.bout=nil;
@@ -71,8 +70,7 @@ atexit(g: ref Private_info)
 
 debug_print(g : ref Private_info,message : string)
 {
-	if (g.dbg_log!=nil)
-		sys->fprint(g.dbg_log,"%s",message);
+	if (g.dbg_log != nil) sys->fprint(g.dbg_log,"%s",message);
 }
 
 parse_args(args : list of string)
@@ -148,14 +146,13 @@ init(nil: ref Draw->Context, argv: list of string)
 	cache_size=5000;
 	debug = 0;
 	parse_args(argv);
-	if (debug==1){
+	if (debug==1) {
 		dbg_log=sys->create(DEBUGLOG,Sys->ORDWR,8r666);
-		if (dbg_log==nil){
+		if (dbg_log==nil) {
 			sys->print("debug log open: %r\n");
 			exit;
 		}
-	}else 
-		dbg_log=nil;
+	} else dbg_log=nil;
 	sys->fprint(dbg_log,"started at %s \n",daytime->time());
 
 	# initialisation routines
@@ -165,21 +162,18 @@ init(nil: ref Draw->Context, argv: list of string)
 	date->init();
 	parser->init();
 	my_domain=sysname();
-	if(addr == nil){
-		if(port != nil)
-			addr = "tcp!*!"+port;
-		else
-			addr = "tcp!*!80";
+	if(addr == nil) {
+		if (port != nil) addr = "tcp!*!"+port;
+		else addr = "tcp!*!80";
 	}
 	(ok, c) := sys->announce(addr);
-	if(ok < 0) {
+	if (ok < 0) {
 		sys->fprint(stderr, "can't announce %s: %r\n", addr);
 		exit;
 	}
 	sys->fprint(logfile,"************ Charon Awakened at %s\n",
 			daytime->time());
-	for(;;)
-		doit(c);
+	for(;;) doit(c);
 	exit;
 }
 
@@ -187,12 +181,11 @@ init(nil: ref Draw->Context, argv: list of string)
 doit(c: Sys->Connection)
 {
 	(ok, nc) := sys->listen(c);
-	if(ok < 0) {
+	if (ok < 0) {
 		sys->fprint(stderr, "listen: %r\n");
 		exit;
 	}
-	if (dbg_log!=nil)
-		sys->fprint(dbg_log,"spawning connection.\n");
+	if (dbg_log!=nil) sys->fprint(dbg_log,"spawning connection.\n");
 	spawn service_req(nc);
 }
 
@@ -201,39 +194,38 @@ service_req(nc : Sys->Connection)
 	buf := array[64] of byte;
 	l := sys->open(nc.dir+"/remote", sys->OREAD);
 	n := sys->read(l, buf, len buf);
-	if(n >= 0)
-		if (dbg_log!=nil)
-			sys->fprint(dbg_log,"New client http: %s %s", nc.dir, 
-							string buf[0:n]);
+	if (n >= 0) {
+		if (dbg_log != nil) sys->fprint(dbg_log, "New client http: %s %s", nc.dir, string buf[0:n]);
+	}
 	#  wait for a call (or an error)
 	#  start a process for the service
-	g:= ref Private_info;
+	g := ref Private_info;
 	g.bufio = bufio;
-	g.dbg_log=dbg_log;
+	g.dbg_log = dbg_log;
 	g.logfile = logfile;
-	g.modtime=0;
+	g.modtime = 0;
 	g.mydomain = my_domain;
 	g.version = "HTTP/1.0";
 	g.cache = cache;
-	g.okencode=nil;
-	g.oktype=nil;
-	g.getcerr="";
-	g.parse_eof=0;
-	g.eof=0;
+	g.okencode = nil;
+	g.oktype = nil;
+	g.getcerr = "";
+	g.parse_eof = 0;
+	g.eof = 0;
 	g.remotesys=getendpoints(nc.dir);
-	debug_print(g,"opening in for "+string buf[0:n]+"\n");
-	g.bin= bufio->open(nc.dir+"/data",bufio->OREAD);
-	if (g.bin==nil){
+	debug_print(g, "opening in for " + string buf[0:n] + "\n");
+	g.bin= bufio->open(nc.dir + "/data", bufio->OREAD);
+	if (g.bin==nil) {
 		sys->print("bin open: %r\n");
 		exit;
 	}
-	debug_print(g,"opening out for "+string buf[0:n]+"\n");
-	g.bout= bufio->open(nc.dir+"/data",bufio->OWRITE);
-	if (g.bout==nil){
+	debug_print(g, "opening out for " + string buf[0:n] + "\n");
+	g.bout = bufio->open(nc.dir + "/data", bufio->OWRITE);
+	if (g.bout == nil){
 		sys->print("bout open: %r\n");
 		exit;
 	}
-	debug_print(g,"calling parsereq for "+string buf[0:n]+"\n");
+	debug_print(g, "calling parsereq for " + string buf[0:n] + "\n");
 	parsereq(g);
 	atexit(g);
 }
@@ -244,70 +236,68 @@ parsereq(g: ref Private_info)
 	# 15 minutes to get request line
 	a := Alarm.alarm(15*1000*60);
 	meth = getword(g);
-	if(meth == nil){
-		parser->logit(g,sys->sprint("no method%s", g.getcerr));
+	if (meth == nil) {
+		parser->logit(g, sys->sprint("no method%s", g.getcerr));
 		a.stop();
-		parser->fail(g,Syntax,"");
+		parser->fail(g, Syntax,"");
 	}
 	uri = getword(g);
 	if(uri == nil || len uri == 0){
-		parser->logit(g,sys->sprint("no uri: %s%s", meth, g.getcerr));
+		parser->logit(g, sys->sprint("no uri: %s%s", meth, g.getcerr));
 		a.stop();
-		parser->fail(g,Syntax,"");
+		parser->fail(g, Syntax, "");
 	}
 	v = getword(g);
 	extra = getword(g);
 	a.stop();
-	if(extra != nil){
-			parser->logit(g,sys->sprint(
-				"extra header word '%s'%s", 
-					extra, g.getcerr));
+	if (extra != nil) {
+			parser->logit(g,sys->sprint("extra header word '%s'%s", extra, g.getcerr));
 			parser->fail(g,Syntax,"");
 	}
 	case v {
 		"" =>
-			if(meth!="GET"){
-				parser->logit(g,sys->sprint("unimplemented method %s%s", meth, g.getcerr));
-				parser->fail(g,Unimp, meth);
+			if (meth!="GET") {
+				parser->logit(g, sys->sprint("unimplemented method %s%s", meth, g.getcerr));
+				parser->fail(g, Unimp, meth);
 			}
 	
 		"HTTP/V1.0" or "HTTP/1.0" or "HTTP/1.1" =>
-			if((meth != "GET")  && (meth!= "HEAD") && (meth!="POST")){
-				parser->logit(g,sys->sprint("unimplemented method %s", meth));
-				parser->fail(g,Unimp, meth);
+			if ((meth != "GET") && (meth != "HEAD") && (meth != "POST")) {
+				parser->logit(g, sys->sprint("unimplemented method %s", meth));
+				parser->fail(g, Unimp, meth);
 			}	
 		* =>
-			parser->logit(g,sys->sprint("method %s uri %s%s", meth, uri, g.getcerr));
-			parser->fail(g,UnkVers, v);
+			parser->logit(g, sys->sprint("method %s uri %s%s", meth, uri, g.getcerr));
+			parser->fail(g, UnkVers, v);
 	}
 
 	# the fragment is not supposed to be sent
 	# strip it because some clients send it
 
-	(uri,extra) = str->splitl(uri, "#");
-	if(extra != nil)
-		parser->logit(g,sys->sprint("fragment %s", extra));
+	(uri, extra) = str->splitl(uri, "#");
+	if(extra != nil) parser->logit(g, sys->sprint("fragment %s", extra));
 	
-	 # munge uri for search, protection, and magic	 
+	# munge uri for search, protection, and magic
 	(uri, search) = stripsearch(uri);
 	uri = compact_path(parser->urlunesc(uri));
-#	if(uri == SVR_ROOT)
-#		parser->fail(g,NotFound, "no object specified");
+	#if(uri == SVR_ROOT) parser->fail(g,NotFound, "no object specified");
 	(uri, magic) = stripmagic(uri);
 	debug_print(g,"stripmagic=("+uri+","+magic+")\n");
 
-	 # normal case is just file transfer
+	# normal case is just file transfer
 	if(magic == nil || (magic == "httpd")){
-		if (meth=="POST")
-			parser->fail(g,Unimp,meth);	# /magic does handles POST
+		# /magic handles POST
+		if (meth == "POST") parser->fail(g,Unimp,meth);
 		g.host = g.mydomain;
 		origuri = uri;
-		parser->httpheaders(g,v);
+		parser->httpheaders(g, v);
 		uri = redir->redirect(origuri);
 		# must change this to implement proxies
-		if(uri==nil){
-			send(g,meth, v, origuri, search);
-		}else{
+		if (uri == nil) {
+			# sending search breaks any request with a query string, since this is a
+			# file transfer we can just ignore it.
+			send(g, meth, v, origuri, nil);
+		} else {
 			g.bout.puts(sys->sprint("%s 301 Moved Permanently\r\n", g.version));
 			g.bout.puts(sys->sprint("Date: %s\r\n", daytime->time()));
 			g.bout.puts("Server: Charon\r\n");
@@ -333,16 +323,16 @@ parsereq(g: ref Private_info)
 do_magic(g: ref Private_info,file, uri, origuri: string, req: Request)
 {
 	buf := sys->sprint("%s%s.dis", MAGICPATH, file);
-	debug_print(g,"looking for "+buf+"\n");
-	c:= load Cgi buf;
-	if (c==nil){
+	debug_print(g, "looking for "+buf+"\n");
+	c := load Cgi buf;
+	if (c==nil) {
 		parser->logit(g,sys->sprint("no magic %s uri %s", file, uri));
 		parser->fail(g,NotFound, origuri);
 	}
 	{
 		c->init(g, req);
 	}
-	exception{
+	exception {
 		"fail:*" =>
 			return;
 	}
@@ -353,36 +343,33 @@ send(g: ref Private_info,name, vers, uri, search : string)
 	typ,enc : ref Content;
 	w : string;
 	n, bad, force301: int;
-	if(search!=nil)
-		parser->fail(g,NoSearch, uri);
+	if (search != nil) parser->fail(g,NoSearch, uri);
 
 	# figure out the type of file and send headers
-	debug_print( g, "httpd->send->open(" + uri + ")\n" );
+	debug_print(g, "httpd->send->open(" + uri + ")\n" );
 	fd := sys->open(uri, sys->OREAD);
 	if(fd == nil){
-		dbm := sys->sprint( "open failed: %r\n" );
-		debug_print( g, dbm );
-		notfound(g,uri);
+		dbm := sys->sprint("open failed: %r\n");
+		debug_print(g, dbm);
+		notfound(g, uri);
 	}
-	(i,dir):=sys->fstat(fd);
-	if(i< 0)
-		parser->fail(g,Internal,"");
-	if(dir.mode & Sys->DMDIR){
-		(nil,p) := str->splitr(uri, "/");
-		if(p == nil){
+	(i,dir) := sys->fstat(fd);
+	if (i< 0) parser->fail(g,Internal,"");
+	if (dir.mode & Sys->DMDIR) {
+		(nil, p) := str->splitr(uri, "/");
+		if (p == nil) {
 			w=sys->sprint("%sindex.html", uri);
 			force301 = 0;
-		}else{
+		} else {
 			w=sys->sprint("%s/index.html", uri);
-			force301 = 1; 
+			force301 = 1;
 		}
 		fd1 := sys->open(w, sys->OREAD);
-		if(fd1 == nil){
+		if (fd1 == nil) {
 			parser->logit(g,sys->sprint("%s directory %s", name, uri));
-			if(g.modtime >= dir.mtime)
-				parser->notmodified(g);
+			if (g.modtime >= dir.mtime) parser->notmodified(g);
 			senddir(g,vers, uri, fd, ref dir);
-		} else if(force301 != 0 && vers != ""){
+		} else if (force301 != 0 && vers != "") {
 			g.bout.puts(sys->sprint("%s 301 Moved Permanently\r\n", g.version));
 			g.bout.puts(sys->sprint("Date: %s\r\n", daytime->time()));
 			g.bout.puts("Server: Charon\r\n");
@@ -403,12 +390,10 @@ send(g: ref Private_info,name, vers, uri, search : string)
 		fd = fd1;
 		uri = w;
 		(i,dir)=sys->fstat(fd);
-		if(i < 0)
-			parser->fail(g,Internal,"");
+		if (i < 0) parser->fail(g,Internal,"");
 	}
 	parser->logit(g,sys->sprint("%s %s %d", name, uri, int dir.length));
-	if(g.modtime >= dir.mtime)
-		parser->notmodified(g);
+	if(g.modtime >= dir.mtime) parser->notmodified(g);
 	n = -1;
 	if(vers != ""){
 		(typ, enc) = contents->uriclass(uri);

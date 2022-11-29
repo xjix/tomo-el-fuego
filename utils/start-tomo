@@ -1,4 +1,6 @@
 #!/usr/bin/env rc
+# requires <https://9fans.github.io/plan9port/> ⋄ xrandr
+
 ## locations
 iroot = /opt/tomo
 if (! ~ $TOMO_IROOT '') { iroot = $TOMO_IROOT }
