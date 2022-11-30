@@ -60,7 +60,7 @@ usage()
 
 atexit(g: ref Private_info)
 {
-	debug_print(g,"At exit from httpd, closing fds. \n");
+	debug_print(g, "At exit from httpd, closing fds. \n");
 	g.bin.close();
 	g.bout.close();
 	g.bin=nil;
@@ -70,12 +70,12 @@ atexit(g: ref Private_info)
 
 debug_print(g : ref Private_info,message : string)
 {
-	if (g.dbg_log != nil) sys->fprint(g.dbg_log,"%s",message);
+	if (g.dbg_log != nil) sys->fprint(g.dbg_log, "%s", message);
 }
 
 parse_args(args : list of string)
 {
-	while(args!=nil){
+	while (args != nil) {
 		case (hd args){
 			"-c" =>
 				args = tl args;
@@ -162,7 +162,7 @@ init(nil: ref Draw->Context, argv: list of string)
 	date->init();
 	parser->init();
 	my_domain=sysname();
-	if(addr == nil) {
+	if (addr == nil) {
 		if (port != nil) addr = "tcp!*!"+port;
 		else addr = "tcp!*!80";
 	}
@@ -171,8 +171,7 @@ init(nil: ref Draw->Context, argv: list of string)
 		sys->fprint(stderr, "can't announce %s: %r\n", addr);
 		exit;
 	}
-	sys->fprint(logfile,"************ Charon Awakened at %s\n",
-			daytime->time());
+	sys->fprint(logfile,"************ Charon Awakened at %s\n", daytime->time());
 	for(;;) doit(c);
 	exit;
 }
@@ -282,10 +281,10 @@ parsereq(g: ref Private_info)
 	uri = compact_path(parser->urlunesc(uri));
 	#if(uri == SVR_ROOT) parser->fail(g,NotFound, "no object specified");
 	(uri, magic) = stripmagic(uri);
-	debug_print(g,"stripmagic=("+uri+","+magic+")\n");
+	debug_print(g, "stripmagic=("+uri+","+magic+")\n");
 
 	# normal case is just file transfer
-	if(magic == nil || (magic == "httpd")){
+	if (magic == nil || (magic == "httpd")){
 		# /magic handles POST
 		if (meth == "POST") parser->fail(g,Unimp,meth);
 		g.host = g.mydomain;
@@ -354,7 +353,7 @@ send(g: ref Private_info,name, vers, uri, search : string)
 		notfound(g, uri);
 	}
 	(i,dir) := sys->fstat(fd);
-	if (i< 0) parser->fail(g,Internal,"");
+	if (i< 0) parser->fail(g, Internal, "");
 	if (dir.mode & Sys->DMDIR) {
 		(nil, p) := str->splitr(uri, "/");
 		if (p == nil) {
@@ -368,7 +367,7 @@ send(g: ref Private_info,name, vers, uri, search : string)
 		if (fd1 == nil) {
 			parser->logit(g,sys->sprint("%s directory %s", name, uri));
 			if (g.modtime >= dir.mtime) parser->notmodified(g);
-			senddir(g,vers, uri, fd, ref dir);
+			senddir(g, vers, uri, fd, ref dir);
 		} else if (force301 != 0 && vers != "") {
 			g.bout.puts(sys->sprint("%s 301 Moved Permanently\r\n", g.version));
 			g.bout.puts(sys->sprint("Date: %s\r\n", daytime->time()));
@@ -466,49 +465,44 @@ classify(d: ref Dir): (ref Content, ref Content)
 }
 
 # read in a directory, format it in html, and send it back
-senddir(g: ref Private_info,vers,uri: string, fd: ref FD, mydir: ref Dir)
+senddir(g: ref Private_info, vers, uri: string, fd: ref FD, mydir: ref Dir)
 {
 	myname: string;
-	myname = uri;
-	if (myname[len myname-1]!='/')
-		myname[len myname]='/';
+	myname = uri[len SVR_ROOT - 1:];
+	if (myname[len myname - 1] != '/') myname[len myname] = '/';
 	(a, n) := readdir->readall(fd, Readdir->NAME);
-	if(vers != ""){
+	if (vers != ""){
 		parser->okheaders(g);
 		g.bout.puts("Content-Type: text/html\r\n");
 		g.bout.puts(sys->sprint("Date: %s\r\n", daytime->time()));
-		g.bout.puts(sys->sprint("Last-Modified: %d\r\n", 
-				mydir.mtime));
-		g.bout.puts(sys->sprint("Message-Id: <%d%d@%s>\r\n",
-			int mydir.qid.path, mydir.qid.vers, g.mydomain));
+		g.bout.puts(sys->sprint("Last-Modified: %d\r\n", mydir.mtime));
+		g.bout.puts(
+			sys->sprint("Message-Id: <%d%d@%s>\r\n", int mydir.qid.path, mydir.qid.vers, g.mydomain));
 		g.bout.puts(sys->sprint("Version: %d\r\n", mydir.qid.vers));
 		g.bout.puts("\r\n");
 	}
-	g.bout.puts(sys->sprint("<head><title>Contents of directory %s.</title></head>\n",
-		uri));
-	g.bout.puts(sys->sprint("<body><h1>Contents of directory %s.</h1>\n",
-		uri));
+	g.bout.puts(
+		sys->sprint("<head><title>Index of %s</title></head>\n", myname));
+	g.bout.puts(
+		sys->sprint("<body><h1>Index of %s</h1>\n", myname));
 	g.bout.puts("<table>\n");
-	for(i := 0; i < n; i++){
+	g.bout.puts("<tr><th>Name</th><th>Type</th></tr>\n");
+	for (i := 0; i < n; i++) {
 		(typ, enc) := classify(a[i]);
-		g.bout.puts(sys->sprint("<tr><td><a href=\"%s%s\">%s</A></td>",
-			myname, a[i].name, a[i].name));
-		if(typ != nil){
-			if(typ.generic!=nil)
-				g.bout.puts(sys->sprint("<td>%s", typ.generic));
-			if(typ.specific!=nil)
-				g.bout.puts(sys->sprint("/%s", 
-						typ.specific));
-			typ=nil;
+		g.bout.puts(
+			sys->sprint("<tr><td><a href=\"%s%s\">%s</A></td>", myname, a[i].name, a[i].name));
+		if (typ != nil) {
+			if (typ.generic != nil) g.bout.puts(sys->sprint("<td>%s", typ.generic));
+			if (typ.specific != nil) g.bout.puts(sys->sprint("/%s", typ.specific));
+			typ = nil;
 		}
-		if(enc != nil){
+		if (enc != nil) {
 			g.bout.puts(sys->sprint(" %s", enc.generic));
 			enc=nil;
 		}
 		g.bout.puts("</td></tr>\n");
 	}
-	if(n == 0)
-		g.bout.puts("<td>This directory is empty</td>\n");
+	if(n == 0) g.bout.puts("<td>This directory is empty</td>\n");
 	g.bout.puts("</table></body>\n");
 	g.bout.flush();
 	atexit(g);
@@ -516,41 +510,36 @@ senddir(g: ref Private_info,vers,uri: string, fd: ref FD, mydir: ref Dir)
 
 stripmagic(uri : string): (string, string)
 {
-	prog,newuri : string;
-	prefix := SVR_ROOT+"magic/";
-	if (!str->prefix(prefix,uri) || len newuri == len prefix)
-		return(uri,nil);
-	uri=uri[len prefix:];
-	(prog,newuri)=str->splitl(uri,"/");
-	return (newuri,prog);
+	prog, newuri : string;
+	prefix := SVR_ROOT + "magic/";
+	if (!str->prefix(prefix,uri) || len newuri == len prefix) return (uri, nil);
+	uri = uri[len prefix:];
+	(prog, newuri) = str->splitl(uri,"/");
+	return (newuri, prog);
 }
 
 stripsearch(uri : string): (string,string)
 {
 	search : string;
-	(uri,search) = str->splitl(uri, "?");
-	if (search!=nil)
-		search=search[1:];
+	(uri, search) = str->splitl(uri, "?");
+	if (search != nil) search=search[1:];
 	return (uri, search);
 }
 
 # get rid of "." and ".." path components; make absolute
-compact_path(origpath:string): string
+compact_path(origpath: string): string
 {
-	if(origpath == nil)
-		origpath = "";
-	(origpath,nil) = str->splitl(origpath, "`;| "); # remove specials
-	(nil,olpath) := sys->tokenize(origpath, "/");
+	if (origpath == nil) origpath = "";
+	(origpath, nil) = str->splitl(origpath, "`;| "); # remove specials
+	(nil, olpath) := sys->tokenize(origpath, "/");
 	rlpath : list of string;
 	for(p := olpath; p != nil; p = tl p) {
-		if(hd p == "..") {
-			if(rlpath != nil)
-				rlpath = tl rlpath;
-		} else if(hd p != ".")
-			rlpath = (hd p) :: rlpath;
+		if (hd p == "..") {
+			if(rlpath != nil) rlpath = tl rlpath;
+		} else if (hd p != ".") rlpath = (hd p) :: rlpath;
 	}
 	cpath := "";
-	if(rlpath!=nil){		
+	if (rlpath != nil) {
 		cpath = hd rlpath;
 		rlpath = tl rlpath;
 		while( rlpath != nil ) {
@@ -570,9 +559,9 @@ getword(g: ref Private_info): string
 		return nil;
 	buf := "";
 	for(;;){
-		case c{
-		' ' or '\t' or '\r' or '\n' =>
-			return buf;
+		case c {
+			' ' or '\t' or '\r' or '\n' =>
+				return buf;
 		}
 		buf[len buf] = c;
 		c = getc(g);
@@ -584,22 +573,19 @@ getc(g : ref Private_info): int
 	# do we read buffered or unbuffered?
 	# buf : array of byte;
 	n : int;
-	if(g.eof){
+	if (g.eof) {
 		debug_print(g,"eof is set in httpd\n");
 		return '\n';
 	}
 	n = g.bin.getc();
-	if (n<=0) { 
-		if(n == 0)
-			g.getcerr=": eof";
-		else
-			g.getcerr=sys->sprint(": n == -1: %r");
+	if (n<=0) {
+		if (n == 0) g.getcerr=": eof";
+		else g.getcerr=sys->sprint(": n == -1: %r");
 		g.eof = 1;
 		return '\n';
 	}
 	n &= 16r7f;
-	if(n == '\n')
-		g.eof = 1;
+	if (n == '\n') g.eof = 1;
 	return n;
 }
 
@@ -609,12 +595,10 @@ notfound(g : ref Private_info,url : string)
 {
 	buf := sys->sprint("%r!");
 	(nil,chk):=str->splitstrl(buf, "file does not exist");
-	if (chk!=nil) 
-		parser->fail(g,NotFound, url);
-	(nil,chk)=str->splitstrl(buf,"permission denied");
-	if(chk != nil)
-		parser->fail(g,Unauth, url);
-	parser->fail(g,NotFound, url);
+	if (chk!=nil) parser->fail(g, NotFound, url);
+	(nil, chk) = str->splitstrl(buf, "permission denied");
+	if(chk != nil) parser->fail(g, Unauth, url);
+	parser->fail(g, NotFound, url);
 }
 
 sysname(): string
@@ -624,12 +608,9 @@ sysname(): string
 	buf := array[128] of byte;
 	
 	fd = sys->open("#c/sysname", sys->OREAD);
-	if(fd == nil)
-		return "";
-	n = sys->read(fd, buf , len buf);
-	if(n <= 0)
-		return "";
-	
+	if (fd == nil) return "";
+	n = sys->read(fd, buf, len buf);
+	if (n <= 0) return "";
 	return string buf[0:n];
 }
 
@@ -637,9 +618,8 @@ sysdom(): string
 {
 	dn : string;
 	dn = csquery("sys" , sysname(), "dom");
-	if(dn == nil)
-		dn = "who cares";
-	return dn; 
+	if (dn == nil) dn = "who cares";
+	return dn;
 }
 
 #  query the connection server
@@ -649,25 +629,20 @@ csquery(attr, val, rattr : string): string
 	buf := array[4096] of byte;
 	fd : ref FD;
 	n: int;
-	if(val == "" ){
-		return nil;
-	}
+	if (val == "" ) return nil;
 	fd = sys->open("/net/cs", sys->ORDWR);
-	if(fd == nil)
-		return nil;
+	if (fd == nil) return nil;
 	sys->fprint(fd, "!%s=%s", attr, val);
 	sys->seek(fd, big 0, 0);
 	token = sys->sprint("%s=", rattr);
-	for(;;){
+	for(;;) {
 		n = sys->read(fd, buf, len buf);
-		if(n <= 0)
-			break;
-		name:=string buf[0:n];
+		if(n <= 0) break;
+		name := string buf[0:n];
 		(nil,p) := str->splitstrl(name, token);
-		if(p != nil){	
-			(p,nil) = str->splitl(p, " \n");
-			if(p == nil)
-				return nil;
+		if (p != nil) {
+			(p, nil) = str->splitl(p, " \n");
+			if (p == nil) return nil;
 			return p[4:];
 		}
 	}
@@ -680,20 +655,17 @@ getendpoint(dir, file: string): (string, string)
 	fto := sys->sprint("%s/%s", dir, file);
 	fd := sys->open(fto, sys->OREAD);
 
-	if(fd !=nil) {
+	if (fd !=nil) {
 		buf := array[128] of byte;
 		n := sys->read(fd, buf, len buf);
-		if(n>0) {
+		if (n>0) {
 			buf = buf[0:n-1];
 			(sysf, serv) = str->splitl(string buf, "!");
-			if (serv != nil)
-				serv = serv[1:];
+			if (serv != nil) serv = serv[1:];
 		}
 	}
-	if(serv == nil)
-		serv = "unknown";
-	if(sysf == nil)
-		sysf = "unknown";
+	if (serv == nil) serv = "unknown";
+	if(sysf == nil) sysf = "unknown";
 	return (sysf, serv);
 }
 
