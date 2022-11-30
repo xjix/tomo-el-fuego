@@ -52,14 +52,12 @@ dbg_log, logfile: ref FD;
 debug: int;
 my_domain: string;
 
-usage()
-{
+usage() {
 	sys->fprint(stderr, "usage: httpd [-c num] [-D] [-a servaddr]\n");
 	raise "fail:usage";
 }
 
-atexit(g: ref Private_info)
-{
+atexit(g: ref Private_info) {
 	debug_print(g, "At exit from httpd, closing fds. \n");
 	g.bin.close();
 	g.bout.close();
@@ -68,15 +66,13 @@ atexit(g: ref Private_info)
 	exit;
 }
 
-debug_print(g : ref Private_info,message : string)
-{
+debug_print(g : ref Private_info,message : string) {
 	if (g.dbg_log != nil) sys->fprint(g.dbg_log, "%s", message);
 }
 
-parse_args(args : list of string)
-{
+parse_args(args : list of string) {
 	while (args != nil) {
-		case (hd args){
+		case (hd args) {
 			"-c" =>
 				args = tl args;
 				cache_size = int hd args;
@@ -93,14 +89,12 @@ parse_args(args : list of string)
 	}
 }
 
-badmod(m: string)
-{
+badmod(m: string) {
 	sys->fprint(stderr, "httpd: cannot load %s: %r\n", m);
 	raise "fail:bad module";
 }
 
-init(nil: ref Draw->Context, argv: list of string)
-{	
+init(nil: ref Draw->Context, argv: list of string) {	
 	# Load global modules.
 	sys = load Sys Sys->PATH;
 	stderr = sys->fildes(2);
@@ -177,8 +171,7 @@ init(nil: ref Draw->Context, argv: list of string)
 }
 
 
-doit(c: Sys->Connection)
-{
+doit(c: Sys->Connection) {
 	(ok, nc) := sys->listen(c);
 	if (ok < 0) {
 		sys->fprint(stderr, "listen: %r\n");
@@ -188,8 +181,7 @@ doit(c: Sys->Connection)
 	spawn service_req(nc);
 }
 
-service_req(nc : Sys->Connection)
-{
+service_req(nc : Sys->Connection) {
 	buf := array[64] of byte;
 	l := sys->open(nc.dir+"/remote", sys->OREAD);
 	n := sys->read(l, buf, len buf);
@@ -229,8 +221,7 @@ service_req(nc : Sys->Connection)
 	atexit(g);
 }
 
-parsereq(g: ref Private_info)
-{
+parsereq(g: ref Private_info) {
 	meth, v,magic,search,uri,origuri,extra : string;
 	# 15 minutes to get request line
 	a := Alarm.alarm(15*1000*60);
@@ -241,7 +232,7 @@ parsereq(g: ref Private_info)
 		parser->fail(g, Syntax,"");
 	}
 	uri = getword(g);
-	if(uri == nil || len uri == 0){
+	if (uri == nil || len uri == 0) {
 		parser->logit(g, sys->sprint("no uri: %s%s", meth, g.getcerr));
 		a.stop();
 		parser->fail(g, Syntax, "");
@@ -319,8 +310,7 @@ parsereq(g: ref Private_info)
 	do_magic(g,magic,uri,origuri,Request(meth, v, uri, search));
 }
 
-do_magic(g: ref Private_info,file, uri, origuri: string, req: Request)
-{
+do_magic(g: ref Private_info,file, uri, origuri: string, req: Request) {
 	buf := sys->sprint("%s%s.dis", MAGICPATH, file);
 	debug_print(g, "looking for "+buf+"\n");
 	c := load Cgi buf;
@@ -337,8 +327,7 @@ do_magic(g: ref Private_info,file, uri, origuri: string, req: Request)
 	}
 }
 
-send(g: ref Private_info,name, vers, uri, search : string)
-{
+send(g: ref Private_info,name, vers, uri, search : string) {
 	typ,enc : ref Content;
 	w : string;
 	n, bad, force301: int;
@@ -394,21 +383,19 @@ send(g: ref Private_info,name, vers, uri, search : string)
 	parser->logit(g,sys->sprint("%s %s %d", name, uri, int dir.length));
 	if(g.modtime >= dir.mtime) parser->notmodified(g);
 	n = -1;
-	if(vers != ""){
+	if (vers != "") {
 		(typ, enc) = contents->uriclass(uri);
-		if(typ == nil)
-			typ = contents->mkcontent("application", "octet-stream");
+		if(typ == nil) typ = contents->mkcontent("application", "octet-stream");
 		bad = 0;
-		if(!contents->checkcontent(typ, g.oktype, "Content-Type")){
+		if (!contents->checkcontent(typ, g.oktype, "Content-Type")){
 			bad = 1;
 			g.bout.puts(sys->sprint("%s 406 None Acceptable\r\n", g.version));
 			parser->logit(g,"no content-type ok");
-		}else if(!contents->checkcontent(enc, g.okencode, "Content-Encoding")){
+		} else if (!contents->checkcontent(enc, g.okencode, "Content-Encoding")) {
 			bad = 1;
 			g.bout.puts(sys->sprint("%s 406 None Acceptable\r\n", g.version));
 			parser->logit(g,"no content-encoding ok");
-		}else
-			g.bout.puts(sys->sprint("%s 200 OK\r\n", g.version));
+		} else g.bout.puts(sys->sprint("%s 200 OK\r\n", g.version));
 		g.bout.puts("Server: Charon\r\n");
 		g.bout.puts(sys->sprint("Last-Modified: %s\r\n", date->dateconv(dir.mtime)));
 		g.bout.puts(sys->sprint("Version: %uxv%ux\r\n", int dir.qid.path, dir.qid.vers));
@@ -416,8 +403,7 @@ send(g: ref Private_info,name, vers, uri, search : string)
 			int dir.qid.path, dir.qid.vers, g.mydomain));
 		g.bout.puts(sys->sprint("Content-Type: %s/%s", typ.generic, typ.specific));
 
-#		if(typ.generic== "text")
-#			g.bout.puts(";charset=unicode-1-1-utf-8");
+#		if(typ.generic== "text") g.bout.puts(";charset=unicode-1-1-utf-8");
 
 		g.bout.puts("\r\n");
 		if(enc != nil){
@@ -428,11 +414,9 @@ send(g: ref Private_info,name, vers, uri, search : string)
 		g.bout.puts(sys->sprint("Date: %s\r\n", daytime->time()));
 		g.bout.puts("MIME-version: 1.0\r\n");
 		g.bout.puts("\r\n");
-		if(bad)
-			atexit(g);
+		if (bad) atexit(g);
 	}
-	if(name == "HEAD")
-		atexit(g);
+	if (name == "HEAD") atexit(g);
 	# send the file if it's a normal file
 	g.bout.flush();
 	# find if its in hash....
@@ -452,21 +436,17 @@ send(g: ref Private_info,name, vers, uri, search : string)
 
 
 # classify a file
-classify(d: ref Dir): (ref Content, ref Content)
-{
+classify(d: ref Dir): (ref Content, ref Content) {
 	typ, enc: ref Content;
 	
-	if(d.qid.qtype&sys->QTDIR)
-		return (contents->mkcontent("directory", nil),nil);
+	if(d.qid.qtype&sys->QTDIR) return (contents->mkcontent("directory", nil),nil);
 	(typ, enc) = contents->uriclass(d.name);
-	if(typ == nil)
-		typ = contents->mkcontent("unknown ", nil);
+	if(typ == nil) typ = contents->mkcontent("unknown ", nil);
 	return (typ, enc);
 }
 
 # read in a directory, format it in html, and send it back
-senddir(g: ref Private_info, vers, uri: string, fd: ref FD, mydir: ref Dir)
-{
+senddir(g: ref Private_info, vers, uri: string, fd: ref FD, mydir: ref Dir) {
 	myname: string;
 	myname = uri[len SVR_ROOT - 1:];
 	if (myname[len myname - 1] != '/') myname[len myname] = '/';
@@ -508,8 +488,7 @@ senddir(g: ref Private_info, vers, uri: string, fd: ref FD, mydir: ref Dir)
 	atexit(g);
 }
 
-stripmagic(uri : string): (string, string)
-{
+stripmagic(uri : string): (string, string) {
 	prog, newuri : string;
 	prefix := SVR_ROOT + "magic/";
 	if (!str->prefix(prefix,uri) || len newuri == len prefix) return (uri, nil);
@@ -518,8 +497,7 @@ stripmagic(uri : string): (string, string)
 	return (newuri, prog);
 }
 
-stripsearch(uri : string): (string,string)
-{
+stripsearch(uri : string): (string,string) {
 	search : string;
 	(uri, search) = str->splitl(uri, "?");
 	if (search != nil) search=search[1:];
@@ -535,14 +513,14 @@ compact_path(origpath: string): string
 	rlpath : list of string;
 	for(p := olpath; p != nil; p = tl p) {
 		if (hd p == "..") {
-			if(rlpath != nil) rlpath = tl rlpath;
+			if (rlpath != nil) rlpath = tl rlpath;
 		} else if (hd p != ".") rlpath = (hd p) :: rlpath;
 	}
 	cpath := "";
 	if (rlpath != nil) {
 		cpath = hd rlpath;
 		rlpath = tl rlpath;
-		while( rlpath != nil ) {
+		while (rlpath != nil) {
 			cpath = (hd rlpath) + "/" +  cpath;
 			rlpath = tl rlpath;
 		}
@@ -550,13 +528,11 @@ compact_path(origpath: string): string
 	return SVR_ROOT + cpath;
 }
 
-getword(g: ref Private_info): string
-{
+getword(g: ref Private_info): string {
 	c: int;
 	while((c = getc(g)) == ' ' || c == '\t' || c == '\r')
 		;
-	if(c == '\n')
-		return nil;
+	if(c == '\n') return nil;
 	buf := "";
 	for(;;){
 		case c {
@@ -591,8 +567,7 @@ getc(g : ref Private_info): int
 
 # couldn't open a file
 # figure out why and return and error message
-notfound(g : ref Private_info,url : string)
-{
+notfound(g : ref Private_info,url : string) {
 	buf := sys->sprint("%r!");
 	(nil,chk):=str->splitstrl(buf, "file does not exist");
 	if (chk!=nil) parser->fail(g, NotFound, url);
@@ -649,8 +624,7 @@ csquery(attr, val, rattr : string): string
 	return nil;
 }
 
-getendpoint(dir, file: string): (string, string)
-{
+getendpoint(dir, file: string): (string, string) {
 	sysf := serv := "";
 	fto := sys->sprint("%s/%s", dir, file);
 	fd := sys->open(fto, sys->OREAD);
