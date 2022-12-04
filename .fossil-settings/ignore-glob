@@ -97,3 +97,4 @@ limbo/runt.h
 
 services/httpd/httpd.debug
 services/httpd/httpd.log
+tomo-*-*-*-*.zip

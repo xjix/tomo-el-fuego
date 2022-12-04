@@ -86,6 +86,15 @@ case "${1}" in
 		mk nuke
 		mk install
 		;;
+	nuke)
+		shift
+		set -e
+		export iroot=$1
+		export syshost=$2
+		export objtype=$3
+		export PATH=$iroot/$syshost/$objtype/bin:$PATH
+		mk nuke
+		;;
 	rebuild)
 		shift
 		export iroot=$1
@@ -93,6 +102,10 @@ case "${1}" in
 		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		mk install
+		;;
+	nuke-Linux)
+		shift
+		$0 nuke ${1:-"/opt/tomo"} Linux 386
 		;;
 	rebuild-Linux)
 		shift

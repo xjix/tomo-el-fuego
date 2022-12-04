@@ -9,18 +9,29 @@ TARG=\
 	dhcp.dis\
 	ping.dis\
 	rip.dis\
+	shttpd.dis\
 	tftpd.dis\
 	virgild.dis\
 	sntp.dis\
 
 SYSMODULES=\
+	arg.m\
 	attrdb.m\
 	bufio.m\
+	daytime.m\
 	dhcp.m\
 	draw.m\
+	encoding.m\
+	env.m\
 	ether.m\
 	ip.m\
 	ipattr.m\
+	keyring.m\
+	regex.m\
+	mhttp.m\
+	security.m\
+	sh.m\
+	string.m\
 	sys.m\
 
 DISBIN=$ROOT/dis/ip

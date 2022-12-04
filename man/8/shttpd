@@ -1,0 +1,412 @@
+.TH SHTTPD 8
+.SH NAME
+shttpd \- HTTP server
+.SH SYNOPSIS
+.B ip/shttpd
+[
+.B -dh
+] [
+.B -A
+.I path realm user:pass
+] [
+.B -C
+.I cachesecs
+] [
+.B -L
+.I listpath 0|1
+] [
+.B -a
+.I addr
+] [
+.B -c
+.I path command methods
+] [
+.B -f
+.I ctlchan
+] [
+.B -i
+.I indexfile
+] [
+.B -l
+.I logfile
+] [
+.B -n
+.I config
+] [
+.B -r
+.I pathre dest
+] [
+.B -s
+.I path addr methods
+] [
+.B -t
+.I extension mimetype
+] [
+.B -z
+.I gzippath
+]
+.I webroot
+.SH DESCRIPTION
+.I Shttpd
+is an HTTP server that supports most of the reasonable features of contemporary http servers:
+.IP \(bu
+http/1.0 and http/1.1 support
+.IP \(bu
+cgi and scgi support
+.IP \(bu
+directory listings
+.IP \(bu
+index file serving
+.IP \(bu
+redirections based on regular expressions
+.IP \(bu
+virtual hosting
+.IP \(bu
+determining mimetype based on file extension
+.IP \(bu
+"range" requests, for random access to files
+.IP \(bu
+access and error logging
+.IP \(bu
+configuration in attrdb format
+.IP \(bu
+as compliant as possible, where reasonable
+.IP \(bu
+mindful of security
+
+.PP
+.I Shttpd
+serves files from
+.IR webroot .
+Options, described below, configure all features except virtual hosting.
+For virtual hosting, a configuration file must be used and the command-line options will only apply to the "default" hostname (i.e. all besides those explicitly configured).  The configuration file, specified using
+.BI -n " config"
+is in
+.I attrdb(6)
+format.  It is read only at startup and at explicit request.
+The attributes are described below, with their corresponding command-line options.  An example configuration file:
+
+.PP
+.EX
+debug
+#nodebug
+vhost
+#novhost
+ctlchan=shttpd
+accesslog=/services/logs/shttpdaccess
+announce=net!www.example.com!80
+
+mime    ext=.text       type='text/plain; charset=utf-8'
+mime    ext=.mov        type='video/quicktime'
+mime    ext=.erl        type='text/plain; charset=utf-8'
+
+# port=80 is not necessary, it's the default
+host=www.example.com port=80
+        listings	path=''
+        cachesecs=60
+        index   file=index.html file=index.htm file=index.txt
+        redir   src='^/oldfile$'        dst=/newfile
+        redir   src='^/oldpath/(.*)$'   dst=/newpath/$1
+        scgi    path=/scgi/test         addr=net!localhost!4000
+        cgi     path=/cgi/env           methods=GET,HEAD cmd='{load std; echo Status: 200 OK; echo content-type: text/plain; echo; cd /env && for(i in *) { echo $i''=''`{cat $i}}}'
+        auth    path=/secret   realm='secret place'    user=username pass=password
+
+alias   
+        host=example.com port=80 usehost=www.example.com useport=80
+.EE
+
+.PP
+The options and their configuration file equivalents:
+.PP
+.TP
+.B -d
+Print debug messages to standard error and the error log,
+.IR /services/logs/shttpderror .
+Attributes `debug' and `nodebug' enable and disable debugging.  Due to attrdb, `nodebug' always takes precedence regardless of position in file.
+.TP
+.B -h
+Serve multiple domains, known as virtual hosting.  The `host'-header in the request (for http/1.1-only) selects the targeted host.  If enabled, the
+.I host
+and TCP
+.I port
+in the request are looked up in the configuration, and files are served from
+.IR webroot/host!port .
+Note that the port is not taken from the `host'-header, but always from the local port of the connection.
+If no configuration could be found or when no specific host was requested (e.g. for http/1.0 requests), the default configuration will be used:  host `_default' and port 80.
+Files in
+.I webroot
+are never served directly with
+.B -h
+present.
+Attributes `vhost' and `novhost' enable and disable virtual hosting.  Due to attrdb, `novhost' always takes precedence regardless of position in file.
+.br
+Virtual hosts can only be specified with the configuration file.  A
+`host'
+entry starts a configuration for a domain, attribute
+`port'
+is optional and defaults to 80.
+The value for
+`host'
+may be `*'.  In this case the entry will serve as default entry, used when no other entry matches an incoming request.
+A host configuraty entry can be reused for another host by an entry with attribute `alias' (value ignored).  Attributes
+`host'
+and
+`port'
+specify the new host,
+attributes
+`usehost'
+and
+`useport'
+specify which entry to use for requests instead.
+`Port' may be omitted, defaulting to `80'.  `Usehost' defaults to the value of `port'.
+.TP
+.BI -L " path 0|1"
+For
+.I path
+and its subdirectories, set whether the request for a directory returns a html-formatted listing of files (when the second parameter is `1'), or a "file not found"-error (when the second parameter is `0').
+Listings are only returned when no index file (see
+.BR -i )
+The per-host configuration attributes are
+`listings' and `nolistings' (value ignored).  One or more paths can be specified using the attribute `path'.
+In determining whether to list directory contents, the most specific match (longest prefix) wins.
+.TP
+.BI -A " path realm user:pass"
+Require authorization for
+.IR path .
+The match on
+.I path
+is a prefix-match.
+Note that the path does not have to end with a slash.
+Only insecure "basic" authorization is currently supported, "digest" is not.
+The per-host configuration attribute is
+`auth' (value ignored).
+`Path'
+specifies the path,
+`realm'
+the descriptive realm,
+`user'
+the user name and
+`pass'
+the password.
+Paths
+may occur multiple times in different `auth'-lines, each valid user/pass combination is allowed access.
+.TP
+.BI -C " cachesecs"
+Add header to allow clients to keep the response in their cache for
+.I cachesecs
+seconds.  This only applies to static content (i.e. files and directory listings) not cgi and scgi handlers.
+The per-host configuration attribute is
+.IR cachesecs .
+.TP
+.BI -a " address"
+Announce to
+.I address
+and listen for incoming connection.
+The global configuration attribute is
+`announce',
+the value is the address to listen on.
+For a reload of the configuration attributes, the announce-addresses are ignored.  To announce to a different set of ports, restart
+.IR shttpd .
+If no addresses are specified,
+.I shttpd
+will listen on
+.IR net!*!http .
+.TP
+.BI -c " path command methods"
+Handle requests for
+.I path
+by executing
+.IR command .
+The normal CGI/1.1 rules apply for
+.IR command .
+.I Path
+is prefix-matched and does not have to end with a slash.
+.I Command
+is executed using
+.IR sh (2).
+.I Methods
+is a comma- or space-separated list of methods (case-sensitive) that are allowed on the resource.  An empty list allows all methods.
+The per-host configuration attribute is
+`cgi'
+(value ignored).
+`Path'
+specifies the host,
+`cmd'
+the command and
+`methos' the methods.
+.TP
+.BI -f " ctlchan"
+Create a
+.IR sys-file2chan (2)
+control file in
+.I /chan
+named
+.IR ctlchan .
+Currently, only the command `reload' is accepted.  It reloads the configuration file currently in use.
+This is a global configuration file option, the corresponding attribute is
+`ctlchan'.
+Only a single control file can be registered.
+.TP
+.BI -i " indexfile"
+Search for the file named
+.I indexfile
+when a directory is requested and return that instead.  This is commonly used to serve an
+`index.html'.
+Multiple file names can be specified, each will be tried in turn until a match is found.
+The per-host configuration attribute is
+`index' (value ignored).
+Multiple attributes
+`file'
+can be specified, each being handled as
+.B -i
+.IR indexfile .
+.TP
+.BI -l " logfile"
+Write the access log to
+.IR logfile .
+For each response, the following is printed (as a list of quoted words, quoted as in
+.IR sh (1)):
+Connection id, timestamp, remote and local ip and port, method, requested host (from `host'-header), path (with query), http version, response code, message and length, the user-agent that sent the request, the referer and finally the domain name for the ip address.
+The global configuration attribute is
+`accesslog'.  The file is also reopened on a reload of the configuration file.
+.TP
+.BI -n " config"
+Use
+.I config
+of the configuraton file, which is in
+.IR attrdb (6)
+format.
+There is no default configuration file.  The command-line options can be used for simple configurations.
+Since command-line options are handled in the order specified and
+.B -n
+overrides the current configuration, command-line options specified before
+.B -n
+are effectively ignored.  Options specified after
+.B -n
+are used for the `default' host.  Note that a reload also replaces all command-line options.
+There is no equivalent for the configuration file.  Be sure to use full path names on the command-line if you want reloads to work.
+.TP
+.BI -r " pathre dest"
+Redirect requests that match regular expression
+.I pathre
+to
+.I dest
+with an HTTP ``301 Moved Permanently'' response.
+.I Pathre
+can contain groups, specified with ()'s as per
+.IR regex (6)
+syntax.  Occurrences of $0, $1, etc. in 
+.I dest
+are replaced by the corresponding group in
+.IR pathre .
+Group `$0' is the entire match and `$1' the first match.  Occurrences of `$$' will be replaced by the literal `$'.
+For
+.IR pathre ,
+`^' means beginning of path and `$' means end of path.
+The per-host configuration attribute is
+`redir' (value ignored).
+`Src'
+is the equivalent of
+.IR pathre ,
+`dst'
+the equivalent of
+.IR dest .
+.TP
+.BI -s " path addr methods"
+Handle requests for
+.I path
+by passing the requests to the SCGI handler at
+.IR addr .
+.I Path
+is prefix-matched and need not end with a slash.
+.I Methods
+is a comma- or space-separated list of methods (case-sensitive) that are allowed on the resource.  An empty list allows all methods.
+The per-host configuration attribute is
+`scgi'
+(value unused).
+`Path'
+specifies the path,
+`addr'
+the address and
+`methods' the methods.
+.TP
+.BI -t " extension mimetype"
+Registers extension (which is suffix-matched and thus should usually include a dot) as being of
+.IR mimetype .
+For each response returning a static file, the mimetype to be returned is looked up in the types specified by
+.B -t
+and compiled-in types, in that order.
+The global configuration attribute is
+`mime' (value unused).
+`Ext'
+specifies the extension,
+`type'
+the mimetype.
+.TP
+.BI -z " gzippath"
+For a requested
+.I path
+starting with
+.IR gzippath ,
+return the gzip-compressed version
+.I path.gz
+instead.
+.I Path.gz
+is only returned if it exists and is smaller than the plain version, and
+.I path
+was not modified after
+.IR path.gz .
+The per-host configuration attribute is `gzip' (value unused), one
+or more `path' attributes specify the paths.
+
+.PP
+There is one last per-host configuration attribute that cannot be specified on the command-line:
+`listen' (value unused).
+On the same line,
+`ip'
+should be present and
+`port'
+may be present (it defaults to the port of the host definition).
+If virtual hosts are enabled, the local address is checked for each request.  If at least one ip address has been specified and the local address is not present in the addresses list of the per-host configuration for the request, a ``404 Object Not Found'' error is returned.
+
+.PP
+To prevent files to be served to the public inadvertently, the root directory of the
+.I shttpd
+is replaced by
+.I webroot
+with
+.IR sys-bind (2).
+Also, suspicious combinations of headers are typically responded to with an error.  This policy may err on the cautious side.  For example, some important headers are not allowed to be specified twice.
+Note that CGI programs run in the namespace
+.I shttpd
+had originally been started with.
+
+.SH SOURCE
+.B /appl/cmd/ip/shttpd.b
+.SH SEE ALSO
+.IR attrdb (6),
+.IR regex (6)
+.PP
+SCGI protocol: http://python.ca/scgi/protocol.txt
+.br
+RFC1945: "Hypertext Transfer Protocol -- HTTP/1.0"
+.br
+RFC2616: "Hypertext Transfer Protocol -- HTTP/1.1"
+.SH BUGS
+Attrdb was not designed for configuration file use.  The per-host configuration attributes can not be nicely grouped as top-level entries can.  No line numbers are printed for errors.
+.PP
+Usernames and passwords should be read from factotum and not be sent in the clear.
+.PP
+See README.
+.PP
+Incompatibilities with the rfcs:
+.br
+* If the `host'-header references a non-existing domain name and virtual hosting is enabled,
+.I shttpd
+responds with `404 Object Not Found', instead of the rfc2626-required `400 Bad Request'.
+.br
+* For http/1.0 requests, the `host'-header is also used.
+.br
+* Only a single format of dates is understood, three are specified (but deprecated).
+.I Shttpd
+returns an error when a date that can not be parsed might result in incorrect behaviour (rather can only being less efficient, e.g. in the context of caching).
