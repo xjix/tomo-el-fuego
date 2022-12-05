@@ -35,7 +35,7 @@ include "mhttp.m";
 	Url, Req, Resp, Hdrs, HTTP_10, HTTP_11, encodepath: import http;
 	UNKNOWN, OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT: import http;
 
-Version: con "shttpd/0";
+Version: con "~tomo/shttpd/0";
 
 
 Repl: adt {
@@ -114,60 +114,61 @@ Shttpd: module {
 };
 
 mimetypes := array[] of {
-	(".pdf",	"application/pdf"),
-	(".html",	"text/html; charset=utf-8"),
-	(".htm",	"text/html; charset=utf-8"),
-	(".txt",	"text/plain; charset=utf-8"),
-	(".diff",	"text/plain; charset=utf-8"),
-	(".patch",	"text/plain; charset=utf-8"),
-	(".ps",		"application/postscript"),
-	(".eps",	"application/postscript"),
-	(".torrent",	"application/x-bittorrent"),
-	(".dvi",	"application/x-dvi"),
-	(".tar.gz",	"application/x-tgz"),
-	(".tgz",	"application/x-tgz"),
-	(".gz",		"application/x-gzip"),
-	(".tar",	"application/x-tar"),
-	(".mp3",	"audio/mpeg"),
-	(".ogg",	"application/ogg"),
-	(".jpg",	"image/jpeg"),
-	(".gif",	"image/gif"),
-	(".png",	"image/png"),
-	(".css",	"text/css"),
-	(".js",		"text/javascript; charset=utf-8"),
-	(".c",		"text/plain; charset=utf-8"),
-	(".b",		"text/plain; charset=utf-8"),
-	(".h",		"text/plain; charset=utf-8"),
-	(".y",		"text/plain; charset=utf-8"),
-	(".sh",		"text/plain; charset=utf-8"),
-	(".orig",	"text/plain; charset=utf-8"),
-	(".conf",	"text/plain; charset=utf-8"),
 	(".avi",	"video/x-msvideo"),
+	(".b",		"text/plain; charset=utf-8"),
+	(".bmp",	"image/bmp"),
 	(".bz2",	"application/x-bzip"),
-	(".tex",	"text/plain; charset=utf-8"),
-	(".mp4",	"video/mp4"),
-	(".mpg",	"video/mpeg"),
-	(".mpeg",	"video/mpeg"),
-	(".ms",		"text/plain; charset=utf-8"),
-	(".roff",	"text/plain; charset=utf-8"),
+	(".c",		"text/plain; charset=utf-8"),
+	(".conf",	"text/plain; charset=utf-8"),
+	(".css",	"text/css"),
+	(".diff",	"text/plain; charset=utf-8"),
+	(".doc",	"application/msword"),
+	(".dvi",	"application/x-dvi"),
+	(".eps",	"application/postscript"),
+	(".gif",	"image/gif"),
+	(".gz",		"application/x-gzip"),
+	(".h",		"text/plain; charset=utf-8"),
+	(".htm",	"text/html; charset=utf-8"),
+	(".html",	"text/html; charset=utf-8"),
+	(".ico",	"image/x-icon"),
+	(".jpeg",	"image/jpeg"),
+	(".jpg",	"image/jpeg"),
+	(".js",		"text/javascript; charset=utf-8"),
 	(".man",	"text/plain; charset=utf-8"),
 	(".me",		"text/plain; charset=utf-8"),
+	(".mp3",	"audio/mpeg"),
+	(".mp4",	"video/mp4"),
+	(".mpeg",	"video/mpeg"),
+	(".mpg",	"video/mpeg"),
+	(".ms",		"text/plain; charset=utf-8"),
+	(".ogg",	"application/ogg"),
+	(".orig",	"text/plain; charset=utf-8"),
+	(".patch",	"text/plain; charset=utf-8"),
+	(".pdf",	"application/pdf"),
+	(".png",	"image/png"),
+	(".ppt",	"application/vnd.ms-powerpoint"),
+	(".ps",		"application/postscript"),
+	(".py",		"text/plain; charset=utf-8"),
+	(".roff",	"text/plain; charset=utf-8"),
+	(".sh",		"text/plain; charset=utf-8"),
+	(".svg",	"image/svg+xml"),
 	(".t",		"text/plain; charset=utf-8"),
+	(".tar",	"application/x-tar"),
+	(".tar.bz2",	"application/x-bzip-compressed-tar"),
+	(".tar.gz",	"application/x-tgz"),
+	(".tbz",	"application/x-bzip-compressed-tar"),
+	(".tex",	"text/plain; charset=utf-8"),
+	(".tgz",	"application/x-tgz"),
 	(".tif",	"image/tiff"),
 	(".tiff",	"image/tiff"),
-	(".doc",	"application/msword"),
-	(".ico",	"image/x-icon"),
-	(".bmp",	"image/bmp"),
-	(".tex",	"text/plain; charset=utf-8"),
-	(".xls",	"application/vnd.ms-excel"),
-	(".ppt",	"application/vnd.ms-powerpoint"),
-	(".tar.bz2",	"application/x-bzip-compressed-tar"),
-	(".bz2",	"application/x-bzip"),
-	(".tbz",	"application/x-bzip-compressed-tar"),
-	(".zip",	"application/zip"),
+	(".torrent",	"application/x-bittorrent"),
+	(".txt",	"text/plain; charset=utf-8"),
 	(".wav",	"audio/x-wav"),
-	(".jpeg",	"image/jpeg"),
-	(".py",		"text/plain; charset=utf-8"),
+	(".woff",	"application/font-woff"),
+	(".woff2",	"font/woff2"),
+	(".xls",	"application/vnd.ms-excel"),
+	(".y",		"text/plain; charset=utf-8"),
+	(".zip",	"application/zip"),
 };
 
 Eok:			con 200;
@@ -659,7 +660,17 @@ httptransact(pid: int, b: ref Iobuf, op: ref Op)
 	op.now = readtime();
 	hdrs := Hdrs.new(("server", Version)::nil);
 
-	# kill ourselve when no request comes in
+	# "You know they'll never really die while the Trunk is alive[...]
+	#  It lives while the code is shifted, and they live with it, always Going Home."
+	# - Moist von Lipwig, Going Postal, Chapter 13
+	# "A man is not dead while his name is still spoken."
+	# - Going Postal, Chapter 4 prologue
+	# <http://www.gnuterrypratchett.com/>
+	hdrs.add("X-Clacks-Overhead", "GNU Geo Rivera");
+	hdrs.add("X-Clacks-Overhead", "GNU Alejandra Agredo");
+	# we love and miss you dear friends
+
+	# kill ourself when no request comes in
 	killschedch <-= (pid, Keepalivesecs*1000, respch := chan of int);
 	killpid := <-respch;
 
