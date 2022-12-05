@@ -1,11 +1,11 @@
 <../../mkconfig
 
 DIRS=\
-	httpd\
 	webget\
 
 SHTARG=\
 	auth.sh\
+	httpd.sh\
 	net.sh\
 	registry.sh\
 	rstyx.sh\

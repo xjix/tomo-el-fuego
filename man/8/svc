@@ -143,3 +143,4 @@ private key of authentication server
 .IR logind (8),
 .IR rstyxd (8),
 .IR signer (8)
+.IR init (8)
