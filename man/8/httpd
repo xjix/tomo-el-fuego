@@ -1,115 +1,56 @@
 .TH HTTPD 8
 .SH NAME
-httpd, echo, stats \- HTTP server
+httpd \- HTTP server
 .SH SYNOPSIS
-.B svc/httpd/httpd
-[
-.BI -a " addr"
-] [
-.BI -c " cachesize"
-] [
-.B -D
-]
+.B svc/httpd
 .PP
-.BI svc/httpd/echo " meth vers uri search"
-.PP
-.BI svc/httpd/stats " meth vers uri search"
 .SH DESCRIPTION
-.I Httpd
-is a simple HTTP daemon, serving version 1.0 of the HTTP protocol.
-It listens for incoming calls on a given
-.I address
-(default:
-.BR tcp!*!80 ).
-It serves content rooted at
-.L /services/httpd/root
-in its name space.
+.I svc/httpd
+is a small wrapper around
+.IR shttpd (8)
+which is used to configure the program as a system service. All data relating to
+.I svc/httpd
+is stored in the following locations:
+
+.IP
+.B /services/httpd/config.db
+.IP
+.B /services/httpd/root/_default
+.IP
+.B /services/httpd/root/example.com
 .PP
-The
-.I httpd
-program supports only the
-.L GET
-and
-.L HEAD
-methods of the HTTP protocol. The
-.L Content-type
-(default
-.LR application/octet-stream )
-and
-.L Content-encoding
-(default
-.LR binary )
-of a file are determined by looking for suffixes of the file name in
-.BR /services/http/http.suff .
-.PP
-If the requested URI begins with
-.BR /magic/ ,
-.I httpd
-loads the module associated with the remaining part of the URI.
-Take care to configure the name space sensibly.
-Simple servers
-.I echo
-and
-.I stats
-are provided (see below).
-.PP
-.I Httpd
-has the following options:
-.TP
-.BI -a " address"
-Listen for calls on the given
-.IR address ,
-expressed using the syntax of
-.IR dial (2).
-.TP
-.BI -c " cachesize"
-Set the size of the daemon's cache to
-.I cachesize
-kilobytes. The default is a five megabyte cache.
-.TP
-.B -D
-Debugging information is written to the file
-.BR /services/httpd/httpd.debug .
-.PP
-.I Echo
-is a trivial server that just returns the method, URI, any search, and the headers sent by the client.
-.PP
-.I Stats
-is an equally simple server that queries the cache and returns information to the user about pages stored in the cache.
-.PP
-More complex services can be written to
-.IR httpd 's
-private interface.
-The file
-.B httpd.m
-(in
-.BR /appl/svc/httpd )
-defines constants and adts used by
-.IR httpd .
-The file
-.B cgi.m
-defines the
-module
-.L Cgi
-which is the interface for programs called using the URI
-.BR /magic/ .
-.SH FILES
-.TF "/services/httpd/httpd.rewrite  "
-.TP
-.B /services/httpd/root
-Root of the served web content.
-.TP
-.B /services/httpd/httpd.debug
-Logfile for debugging information.
-.TP
-.B /services/httpd/httpd.log
-.I httpd
-logfile.
-.TP
-.B /services/httpd/httpd.rewrite
-File to redirect specific URI requests.
-.TP
-.B /services/httpd/httpd.suff
-File of recognizable suffixes and their content type.
+
+The configuration file is in
+.IR attrdb (6)
+format. A cluster setup can export a file like this to support distributing work over a grid. A grid-specific svc script may be provided in the future to facilitate this use-case.
+
+.EX
+debug
+#nodebug
+vhost
+ctlchan=shttpd
+accesslog=/services/httpd/access.log
+announce=net!www.example.com!80
+
+mime    ext=.text       type='text/plain; charset=utf-8'
+mime    ext=.mov        type='video/quicktime'
+mime    ext=.erl        type='text/plain; charset=utf-8'
+
+# port=80 is not necessary, it's the default
+host=www.example.com port=80
+        listings	path=''
+        cachesecs=60
+        index   file=index.html file=index.htm file=index.txt
+        redir   src='^/oldfile$'        dst=/newfile
+        redir   src='^/oldpath/(.*)$'   dst=/newpath/$1
+
+alias   
+        host=example.com port=80 usehost=www.example.com useport=80
+.EE
+
 .SH SOURCE
-.B /appl/svc/httpd
+.B /appl/svc/httpd.sh
+.SH SEE ALSO
+.IR svc (8),
+.IR shttpd (8),
+.IR attrdb (6)

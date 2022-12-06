@@ -1,0 +1,5 @@
+#!/dis/sh
+# FIXME how to exec?
+# announce net!*!http: Permission denied
+# backslash doesn't escape newline btw in here
+/dis/ip/shttpd -h -i index.html /services/httpd/root

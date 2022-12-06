@@ -1,5 +1,2 @@
 #!/dis/sh
-# FIXME how to exec?
-/dis/ip/shttpd -h \
-	-i index.html \
-	/services/httpd/root
+/dis/ip/shttpd -h -n /services/httpd/config.db
