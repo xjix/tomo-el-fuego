@@ -1,29 +1,26 @@
 .TH HTTPD 8
 .SH NAME
 httpd \- HTTP server
+
 .SH SYNOPSIS
 .B svc/httpd
 .PP
 .SH DESCRIPTION
 .I svc/httpd
-is a small wrapper around
-.IR shttpd (8)
-which is used to configure the program as a system service. All data relating to
-.I svc/httpd
-is stored in the following locations:
 
-.IP
+.SH FILES & PATHS
+.TF /services/httpd/root/example.com/
+.TP
+.B /services/httpd/root/_default/
+default docroot
+.TP
+.B /services/httpd/root/example.com/
+example vhost
+.TP
 .B /services/httpd/config.db
-.IP
-.B /services/httpd/root/_default
-.IP
-.B /services/httpd/root/example.com
-.PP
+config file
 
-The configuration file is in
-.IR attrdb (6)
-format. A cluster setup can export a file like this to support distributing work over a grid. A grid-specific svc script may be provided in the future to facilitate this use-case.
-
+.SH EXAMPLE config.db
 .EX
 debug
 #nodebug
@@ -38,19 +35,24 @@ mime    ext=.erl        type='text/plain; charset=utf-8'
 
 # port=80 is not necessary, it's the default
 host=www.example.com port=80
-        listings	path=''
+        listings path=''
         cachesecs=60
         index   file=index.html file=index.htm file=index.txt
         redir   src='^/oldfile$'        dst=/newfile
         redir   src='^/oldpath/(.*)$'   dst=/newpath/$1
 
-alias   
+alias
         host=example.com port=80 usehost=www.example.com useport=80
 .EE
 
-.SH SOURCE
-.B /appl/svc/httpd.sh
-.SH SEE ALSO
-.IR svc (8),
+For complete documentation see
 .IR shttpd (8),
 .IR attrdb (6)
+
+A cluster setup can export a file like this to support distributing work over a grid. A grid-specific svc script may be provided in the future to facilitate this use-case.
+
+.SH SOURCE
+.B /appl/svc/httpd.sh
+
+.SH SEE ALSO
+.IR svc (8)

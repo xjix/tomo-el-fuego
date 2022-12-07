@@ -144,5 +144,5 @@ private key of authentication server
 .IR dns (8),
 .IR logind (8),
 .IR rstyxd (8),
-.IR signer (8)
+.IR signer (8),
 .IR init (8)
