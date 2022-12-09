@@ -48,9 +48,9 @@ case "${1}" in
 	enter-chroot)
 		shift
 		MY_CHROOT=$1
-		echo "proc $MY_CHROOT/proc proc defaults 0 0" >> /etc/fstab
+		#echo "proc $MY_CHROOT/proc proc defaults 0 0" >> /etc/fstab
 		mount proc $MY_CHROOT/proc -t proc
-		echo "sysfs $MY_CHROOT/sys sysfs defaults 0 0" >> /etc/fstab
+		#echo "sysfs $MY_CHROOT/sys sysfs defaults 0 0" >> /etc/fstab
 		mount sysfs $MY_CHROOT/sys -t sysfs
 		cp /etc/hosts $MY_CHROOT/etc/hosts
 		cp /proc/mounts $MY_CHROOT/etc/mtab

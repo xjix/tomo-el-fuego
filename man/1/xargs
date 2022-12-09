@@ -1,6 +1,6 @@
 .TH XARGS 1
 .SH NAME
-xargs \- conxargsenate files
+xargs \- conxargsenate files (apply cmd to args list read from stdin)
 .SH SYNOPSIS
 .B xargs
 .I command
@@ -10,7 +10,7 @@ xargs \- conxargsenate files
 <[
 .I list of last command arg
 ]
-.SH DESCRIPTION
+.SH EXAMPLES
 TODO
 .SH SOURCE
 .B /appl/cmd/xargs.b

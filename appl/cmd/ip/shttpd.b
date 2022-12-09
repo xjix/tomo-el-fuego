@@ -1,4 +1,56 @@
+# The author disclaims copyright to this source code.  In place of
+# a legal notice, here is a blessing:
+#
+#    May you do good and not evil.
+#    May you find forgiveness for yourself and forgive others.
+#    May you share freely, never taking more than you give.
 implement Shttpd;
+
+# # status
+#
+# quite useful, has been in production for quite some time.
+#
+#
+# # intro
+#
+# shttpd is a simple httpd.
+#
+# features:
+#
+# - http/1.0, http/1.1 (keep-alive, chunked responses).  no "http/0.9".
+# - cgi and scgi support
+# - virtual hosts
+# - determining content-type based on file extension
+# - error/access logging
+# - index file serving, html directory listings
+# - http basic authentication
+# - "range" requests, for random access to files
+# - redirections with regular expressions
+# - configuration in attrdb format
+# - as compliant as possible, where reasonable
+# - mindful of security
+#
+# see the manual page for full documentation
+#
+# # non-features
+#
+# some features will not be implemented.  for example:
+#
+# - connection rate limiting.  should be done at a higher level, e.g. firewall.
+#
+# # testing/todo
+#
+# doc/shttpd-testing.txt can be used for testing.  it has to be done manually,
+# enough corner cases have not been tested, but quite a few have.
+#
+# todo:
+#
+# - when responding with chunked data, can we embed an error message in a chunks comment-part when an error with reading the data occurs?
+# - support transfer-encoding chunked and compressed content-encodings from client?
+# - check for security issues with http
+# - think of ssl?
+# - try to fix dir listings for paths with multiple slashes in them.  firefox breaks on them, is firefox right?
+# - test with other browsers
 
 include "sys.m";
 	sys: Sys;

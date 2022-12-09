@@ -397,8 +397,6 @@ Attrdb was not designed for configuration file use.  The per-host configuration 
 .PP
 Usernames and passwords should be read from factotum and not be sent in the clear.
 .PP
-See README.
-.PP
 Incompatibilities with the rfcs:
 .br
 * If the `host'-header references a non-existing domain name and virtual hosting is enabled,
