@@ -4,17 +4,12 @@
 #    May you do good and not evil.
 #    May you find forgiveness for yourself and forgive others.
 #    May you share freely, never taking more than you give.
+#
+# <6972b3440c27a83c1a56c5ecc781148514fb1f11>
+# <https://github.com/mjl-/httpd/>
+# <https://git.heropunch.io/ar/inferno-httpd/>
 implement Shttpd;
 
-# # status
-#
-# quite useful, has been in production for quite some time.
-#
-#
-# # intro
-#
-# shttpd is a simple httpd.
-#
 # features:
 #
 # - http/1.0, http/1.1 (keep-alive, chunked responses).  no "http/0.9".
@@ -32,24 +27,22 @@ implement Shttpd;
 #
 # see the manual page for full documentation
 #
-# # non-features
-#
-# some features will not be implemented.  for example:
+# non-features:
 #
 # - connection rate limiting.  should be done at a higher level, e.g. firewall.
+# - silly "correct" behavior per RFC
 #
-# # testing/todo
+# testing/todo:
 #
-# doc/shttpd-testing.txt can be used for testing.  it has to be done manually,
-# enough corner cases have not been tested, but quite a few have.
-#
-# todo:
-#
-# - when responding with chunked data, can we embed an error message in a chunks comment-part when an error with reading the data occurs?
+# - doc/shttpd-testing.txt can be used for testing.  it has to be done manually,
+#   enough corner cases have not been tested, but quite a few have.
+# - when responding with chunked data, can we embed an error message in a chunks
+#   comment-part when an error with reading the data occurs?
 # - support transfer-encoding chunked and compressed content-encodings from client?
 # - check for security issues with http
 # - think of ssl?
-# - try to fix dir listings for paths with multiple slashes in them.  firefox breaks on them, is firefox right?
+# - try to fix dir listings for paths with multiple slashes in them.  firefox breaks
+#   on them, is firefox right?
 # - test with other browsers
 
 include "sys.m";
@@ -710,6 +703,7 @@ httptransact(pid: int, b: ref Iobuf, op: ref Op)
 {
 	id := op.id;
 	op.now = readtime();
+
 	hdrs := Hdrs.new(("server", Version)::nil);
 
 	# "You know they'll never really die while the Trunk is alive[...]
@@ -721,6 +715,9 @@ httptransact(pid: int, b: ref Iobuf, op: ref Op)
 	hdrs.add("X-Clacks-Overhead", "GNU Geo Rivera");
 	hdrs.add("X-Clacks-Overhead", "GNU Alejandra Agredo");
 	# we love and miss you dear friends
+
+	# disable FLoC
+	hdrs.add("Permissions-Policy", "interest cohort=()");
 
 	# kill ourself when no request comes in
 	killschedch <-= (pid, Keepalivesecs*1000, respch := chan of int);

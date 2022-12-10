@@ -227,6 +227,9 @@ main(ctxt: ref Draw->Context, argv: list of string)
 		if (font[0] != '/' && (len font == 1 || font[0:2] != "./"))
 			font = "/fonts/" + font;
 		cmd(t, ".ft.t configure -font " + font);
+	} else { # TODO theme support
+		font = "/fonts/BQN386/16/font";
+		cmd(t, ".ft.t configure -font " + font);
 	}
 	cmd(t, ".ft.t configure -width 65w -height 20h");
 	cmd(t, "pack propagate . 0");

@@ -178,10 +178,8 @@ fontcache : array of ref Reffont;
 nfontcache : int;
 reffonts : array of ref Reffont;
 deffontnames := array[2] of { # TODO theme support
-	"/fonts/Ac437_IBM_DOS_ISO9/16/font",
-	"/fonts/Ac437_IBM_DOS_ISO9/16a/font",
-#	"/fonts/lucidasans/euro.8.font",
-#	"/fonts/lucm/unicode.9.font",
+	"/fonts/hermit/regular/16/font",
+	"/fonts/BQN386/16/font",
 };
 
 command : ref Command;
