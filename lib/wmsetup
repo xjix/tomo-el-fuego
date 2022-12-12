@@ -44,7 +44,7 @@ fn start_wm_irc {
 
 plumber >/chan/wmstdout >[2=1]
 
-#menu 'Web Browser'			{wmrun charon}
+menu 'Web Browser'		{wmrun charon}
 menu Files			{if {ftest -d $home} {wmrun wm/ftree $home} {wmrun wm/ftree /}}
 menu Manual			{wmrun wm/man}
 menu Amce			{wmrun acme}
