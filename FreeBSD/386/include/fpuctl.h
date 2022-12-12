@@ -1,5 +1,6 @@
 /*
- * Linux 386 fpu support
+ * vi: ts=8
+ * FreeBSD 386 fpu support
  * Mimic Plan9 floating point support
  */
 
@@ -11,7 +12,7 @@ setfcr(ulong fcr)
 			"fwait\n\t"
 			"fldcw	(%%esp)\n\t"
 			"popw	%%ax\n\t"
-			: /* no output */
+			: "=a" (fcr)
 			: "al" (fcr)
 	);
 }
@@ -36,7 +37,7 @@ static ulong
 getfsr(void)
 {
 	ulong fsr = -1;
-
+	/* FIXME FreeBSD/386/include/fpuctl.h:41:11: error: couldn't allocate input reg for constraint 'x' */
 	__asm__(	"fwait\n\t"
 			"fstsw	(%%eax)\n\t"
 			"movl	(%%eax), %%eax\n\t"

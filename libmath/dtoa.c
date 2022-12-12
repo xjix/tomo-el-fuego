@@ -2,7 +2,7 @@
 /* kudos to dmg@bell-labs.com, gripes to ehg@bell-labs.com */
 #include "lib9.h"
 
-#ifdef __APPLE__
+#if defined __APPLE__ || defined __clang__
 #pragma clang diagnostic ignored "-Wlogical-op-parentheses"
 #pragma clang diagnostic ignored "-Wparentheses"
 #endif
