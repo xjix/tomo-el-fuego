@@ -1,5 +1,7 @@
 %{
 #include "a.h"
+extern struct h h[NSYM];
+extern struct fi fi;
 %}
 %union
 {

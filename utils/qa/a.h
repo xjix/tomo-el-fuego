@@ -55,11 +55,11 @@ struct	Sym
 };
 #define	S	((Sym*)0)
 
-struct
+struct fi
 {
 	char*	p;
 	int	c;
-} fi;
+};// fi;
 
 struct	Io
 {
@@ -71,11 +71,11 @@ struct	Io
 };
 #define	I	((Io*)0)
 
-struct
+struct h
 {
 	Sym*	sym;
 	short	type;
-} h[NSYM];
+};// h[NSYM];
 
 struct	Gen
 {

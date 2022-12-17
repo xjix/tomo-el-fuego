@@ -6,16 +6,13 @@
 #include	"draw.h"
 #include	"version.h"
 
+void	(*coherence)(void);
 int		rebootargc = 0;
-char**		rebootargv;
+char**	rebootargv;
 static	char	*imod = "/dis/emuinit.dis";
 extern	char*	hosttype;
-#ifndef tkfont
-char*	tkfont;	/* for libtk/utils.c */
-#endif
-#ifndef tkstylus
-int	tkstylus;	/* libinterp/tk.c */
-#endif
+extern	char*	tkfont;	/* for libtk/utils.c */
+extern	int	tkstylus;	/* libinterp/tk.c */
 extern	int	mflag;
 	int	dflag;
 	int vflag;

@@ -23,13 +23,13 @@ struct
 	Atidle*	idletasks;
 } isched;
 
-int	bflag;
 int	cflag;
 uvlong	gcbusy;
 uvlong	gcidle;
 uvlong	gcidlepass;
 uvlong	gcpartial;
 int keepbroken = 1;
+extern int	bflag;
 extern int	vflag;
 static Prog*	proghash[64];
 

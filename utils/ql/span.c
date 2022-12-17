@@ -1,6 +1,8 @@
 #include	"l.h"
 #define	r0iszero	1
 
+struct oprange oprange[ALAST];
+
 void
 span(void)
 {
