@@ -131,10 +131,11 @@ case "${1}" in
 		# the ext feature so access can be managed in the usual way!
 		# https://fossil-scm.org/home/doc/trunk/www/serverext.wiki
 		artifact="$1"
+		set -xe
 		curl -vSsf -m 360 \
 			-X POST \
 			--data-binary "@`realpath $artifact`" \
-			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
+			"https://$hp_ci_upload_key@$hp_ci_upload_endpoint?n=$artifact"
 		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"
