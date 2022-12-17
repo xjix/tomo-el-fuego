@@ -131,10 +131,12 @@ case "${1}" in
 		# the ext feature so access can be managed in the usual way!
 		# https://fossil-scm.org/home/doc/trunk/www/serverext.wiki
 		artifact="$1"
+		artifact_path=`realpath $artifact`
 		set -xe
+		zip -r "$artifact" *
 		curl -Ssf -m 360 \
 			-X POST \
-			--data-binary "@`realpath $artifact`" \
+			--data-binary "@$artifact_path" \
 			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
 		;;
 	*)
