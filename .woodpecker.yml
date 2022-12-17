@@ -9,7 +9,7 @@ pipeline:
       - apt install -yy curl:i386 binutils:i386 gcc:i386 libc6-dev-i386 libx11-dev:i386 libxext-dev:i386 zip:i386 >/dev/null
       - ./utils/tomo-dev.sh build-Linux `pwd`
       - rm -rf .git .hg
-      - ./utils/tomo-dev.sh upload-ci "tomo-Linux-386-${CI_COMMIT_SHA:0:8}-$CI_BUILD_STARTED.zip"
+      - ./utils/tomo-dev.sh upload-ci "tomo-Linux-386-${CI_COMMIT_BRANCH/master/trunk}-$CI_BUILD_STARTED-${CI_COMMIT_SHA:0:8}.zip"
 #  Linux-386--musl:
 #    image: alpine
 #    group: build
