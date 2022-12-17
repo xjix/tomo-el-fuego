@@ -133,7 +133,7 @@ case "${1}" in
 		artifact="$1"
 		curl -vSsf -m 360 \
 			-X POST \
-			--data-binary "@`abspath $artifact`" \
+			--data-binary "@`realpath $artifact`" \
 			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
 		;;
 	*)

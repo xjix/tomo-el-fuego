@@ -717,7 +717,7 @@ httptransact(pid: int, b: ref Iobuf, op: ref Op)
 	# we love and miss you dear friends
 
 	# disable FLoC
-	hdrs.add("Permissions-Policy", "interest cohort=()");
+	hdrs.add("Permissions-Policy", "interest-cohort=()");
 
 	# kill ourself when no request comes in
 	killschedch <-= (pid, Keepalivesecs*1000, respch := chan of int);
