@@ -83,6 +83,7 @@ case "${1}" in
 		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		./makemk.sh
+		mk mkdirs
 		mk nuke
 		mk install
 		;;
