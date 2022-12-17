@@ -1,0 +1,12 @@
+# ttf fonts
+
+original sources for system fonts and big fonts that are more efficient to use
+via font server.
+
+## noto
+
+tomo el fuego is designed to be accessible to all cultures. we use noto to help
+facilitate that goal! the collection is very large, but it is important to have
+native support for all forms of human expression via text. we recognize that
+unicode does not yet provide support for many languages including maya.
+

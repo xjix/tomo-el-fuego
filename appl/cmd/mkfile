@@ -99,6 +99,7 @@ TARG=\
 	listen.dis\
 	lockfs.dis\
 	logfile.dis\
+	#logparse.dis\
 	look.dis\
 	ls.dis\
 	lstar.dis\
@@ -269,6 +270,8 @@ DISBIN=$ROOT/dis
 
 auhdr.dis: auplay.dis
 	rm -f auhdr.dis && cp auplay.dis auhdr.dis
+logparse.b: logparse.y
+	yacc -o logparse.b logparse.y
 
 dbfs.dis: $MODDIR/styxservers.m
 rawdbfs.dis: $MODDIR/styxservers.m

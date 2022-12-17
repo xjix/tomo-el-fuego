@@ -48,9 +48,9 @@ case "${1}" in
 	enter-chroot)
 		shift
 		MY_CHROOT=$1
-		echo "proc $MY_CHROOT/proc proc defaults 0 0" >> /etc/fstab
+		#echo "proc $MY_CHROOT/proc proc defaults 0 0" >> /etc/fstab
 		mount proc $MY_CHROOT/proc -t proc
-		echo "sysfs $MY_CHROOT/sys sysfs defaults 0 0" >> /etc/fstab
+		#echo "sysfs $MY_CHROOT/sys sysfs defaults 0 0" >> /etc/fstab
 		mount sysfs $MY_CHROOT/sys -t sysfs
 		cp /etc/hosts $MY_CHROOT/etc/hosts
 		cp /proc/mounts $MY_CHROOT/etc/mtab
@@ -83,8 +83,18 @@ case "${1}" in
 		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		./makemk.sh
+		mk mkdirs
 		mk nuke
 		mk install
+		;;
+	nuke)
+		shift
+		set -e
+		export iroot=$1
+		export syshost=$2
+		export objtype=$3
+		export PATH=$iroot/$syshost/$objtype/bin:$PATH
+		mk nuke
 		;;
 	rebuild)
 		shift
@@ -93,6 +103,10 @@ case "${1}" in
 		export objtype=$3
 		export PATH=$iroot/$syshost/$objtype/bin:$PATH
 		mk install
+		;;
+	nuke-Linux)
+		shift
+		$0 nuke ${1:-"/opt/tomo"} Linux 386
 		;;
 	rebuild-Linux)
 		shift
@@ -119,7 +133,7 @@ case "${1}" in
 		artifact="$1"
 		curl -vSsf -m 360 \
 			-X POST \
-			--data-binary "@`abspath $artifact`" \
+			--data-binary "@`realpath $artifact`" \
 			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
 		;;
 	*)

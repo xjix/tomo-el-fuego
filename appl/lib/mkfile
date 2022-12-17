@@ -76,6 +76,7 @@ TARG=\
 	lock.dis\
 	login.dis\
 	man.dis\
+	mhttp.dis\
 	memfs.dis\
 	mpeg.dis\
 	msgio.dis\

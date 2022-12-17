@@ -130,6 +130,8 @@ private key of authentication server
 .B /appl/svc/rstyx.sh
 .br
 .B /appl/svc/styx.sh
+.SH AUX. SERVICES
+.IR httpd (8)
 .SH SEE ALSO
 .IR listen (1),
 .IR export (4),
@@ -142,4 +144,5 @@ private key of authentication server
 .IR dns (8),
 .IR logind (8),
 .IR rstyxd (8),
-.IR signer (8)
+.IR signer (8),
+.IR init (8)

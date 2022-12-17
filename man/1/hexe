@@ -1,0 +1,15 @@
+.TH HEXE 1
+.SH NAME
+hexe \- a hexdumping tool with 0% bloat
+.SH SYNOPSIS
+.B hexe
+[
+.I infile
+]
+[
+.I outfile
+]
+.SH DESCRIPTION
+Omitting either or using - uses stdin/stdout.
+.SH SOURCE
+.B /appl/cmd/hexe.b

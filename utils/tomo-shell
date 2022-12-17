@@ -1,0 +1,12 @@
+#!/usr/bin/env rc
+# * https://9fans.github.io/plan9port/
+# * xorg xrandr / x11-xserver-utils
+# * xorg xsetroot / x11-xserver-utils
+# PATH=$PATH:/opt/tomo/Linux/386/bin:/opt/tomo/utils
+TOMO_SCREEN = `{xrandr \
+	| 9 grep '\*' \
+	| 9 awk '{print $1}' \
+	| 9 sort \
+	| 9 head -n1}
+xsetroot -cursor_name left_ptr
+start-tomo $* -- :0 vt$XDG_VTNR
