@@ -132,7 +132,7 @@ case "${1}" in
 		# https://fossil-scm.org/home/doc/trunk/www/serverext.wiki
 		artifact="$1"
 		set -xe
-		curl -vSsf -m 360 \
+		curl -Ssf -m 360 \
 			-X POST \
 			--data-binary "@`realpath $artifact`" \
 			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
