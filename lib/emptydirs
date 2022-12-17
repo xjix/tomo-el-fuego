@@ -79,6 +79,7 @@ n/rdbg
 n/registry
 n/remote
 services/logs
+services/httpd/root
 services/ppp
 src
 tmp
