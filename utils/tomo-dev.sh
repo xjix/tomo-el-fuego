@@ -135,7 +135,7 @@ case "${1}" in
 		curl -vSsf -m 360 \
 			-X POST \
 			--data-binary "@`realpath $artifact`" \
-			"https://$hp_ci_upload_key@$hp_ci_upload_endpoint?n=$artifact"
+			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
 		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"

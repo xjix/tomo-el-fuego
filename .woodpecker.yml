@@ -1,7 +1,8 @@
 pipeline:
-  Linux-386--debian:
+  Linux-386--glibc:
     image: debian:stable-slim
     group: build
+    secrets: [ hp_ci_upload_key, hp_ci_upload_endpoint ]
     commands:
       - dpkg --add-architecture i386
       - apt update >/dev/null
@@ -10,14 +11,7 @@ pipeline:
       - rm -rf .git .hg
       - zip -r "tomo-Linux-386--debian-$CI_COMMIT_SHA-$CI_BUILD_STARTED.zip" *
       - ./utils/tomo-dev.sh upload-ci "tomo-Linux-386--debian-$CI_COMMIT_SHA-$CI_BUILD_STARTED.zip"
-#  Linux-386--ubuntu:
-#    image: ubuntu:bionic
+#  Linux-386--musl:
+#    image: alpine
 #    group: build
 #    commands:
-#      - dpkg --add-architecture i386
-#      - apt update >/dev/null
-#      - apt install -yy binutils:i386 gcc:i386 libc6-dev-i386 libx11-dev:i386 libxext-dev:i386 zip:i386 >/dev/null
-#      - ./tomo-dev.sh build-Linux `pwd`
-#      - rm -rf .git .hg
-#      - zip -r "tomo-Linux-386--ubuntu-$CI_COMMIT_SHA-$CI_BUILD_STARTED.zip" *
-#      - ./tomo-dev.sh upload-ci "tomo-Linux-386--ubuntu-$CI_COMMIT_SHA-$CI_BUILD_STARTED.zip"
