@@ -28,6 +28,7 @@ FILES = \
 DIRS = \
 	limbo \
 	perform \
+	man \
 #	limbotk \
 
 PRE=$FONTS'.ps 9
@@ -68,3 +69,13 @@ changes.ps:D:	changes.ms
 
 %.pdf: %.ps
 	ps2pdf <$stem.ps >$stem.pdf
+
+man/%.html:Q:	/man/%
+	mkdir -p `{basename -d man/$stem}
+	man2html /man/$stem `{echo $stem | sed 's,([0-9])/.+,\1,g'} > man/$stem.html
+	echo man2html /man/$stem
+
+MANPAGES = \
+	`{find -f -d 2 /man | sed -e 's,$,.html,g' -e 's,^/man/,man/,g'}
+
+manual:V: $MANPAGES

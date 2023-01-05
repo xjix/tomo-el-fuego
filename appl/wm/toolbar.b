@@ -481,7 +481,7 @@ con_cfg := array[] of
 	"frame .cons",
 	"scrollbar .cons.scroll -command {.cons.t yview}",
 	"text .cons.t -width 60w -height 15w -bg white "+
-		"-fg black -font /fonts/misc/latin1.6x13.font "+
+		"-fg black -font /fonts/Ac437_IBM_DOS_ISO9/16/font "+
 		"-yscrollcommand {.cons.scroll set}",
 	"pack .cons.scroll -side left -fill y",
 	"pack .cons.t -fill both -expand 1",

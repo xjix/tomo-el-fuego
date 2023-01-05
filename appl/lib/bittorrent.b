@@ -76,6 +76,7 @@ Bee.find(bb: self ref Bee, s: string): ref Bee
 	return nil;
 }
 
+# bencode? should be its own module
 Bee.pack(b: self ref Bee): array of byte
 {
 	n := b.packedsize();

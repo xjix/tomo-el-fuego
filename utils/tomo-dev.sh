@@ -65,6 +65,19 @@ case "${1}" in
 		shift
 		mount --bind `pwd` ${1:-"/opt/tomo"}
 		;;
+	setup-ci)
+		dpkg --add-architecture i386
+		apt update >/dev/null
+		apt install -yy \
+			curl:i386 \
+			binutils:i386 \
+			gcc:i386 \
+			libc6-dev-i386 \
+			libx11-dev:i386 \
+			libxext-dev:i386 \
+			zip:i386 \
+			>/dev/null
+		;;
 	setup-chroot)
 		shift
 		apt-get update

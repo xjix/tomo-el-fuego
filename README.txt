@@ -9,9 +9,11 @@ runtime.
 
 => ./NOTICE	license information
 => ./INSTALL	build instruction
+=> https://heropunch.io/xjix/tomo-el-fuego/	canonical repo
+=> https://heropunch.io/xjix/tomo-el-fuego/rptview?rn=1	issues
 
 ```
 ./utils/tomo-dev.sh --help
 ```
 
-# vi: ts=8
+# vi: ts=64

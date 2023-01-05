@@ -18,8 +18,8 @@ PLAT=$ROOT/$SYSTARG/$OBJTYPE
 
 # you might need to adjust the CC, LD, AR, and RANLIB definitions after this point
 # FIXME build fails under termux/clang and termux/gcc-9
-CC="p gcc -c -I$PLAT/include -I$ROOT/include -I$ROOT/utils/include"
-LD="p gcc"
+CC="p cc -c -I$PLAT/include -I$ROOT/include -I$ROOT/utils/include"
+LD="p cc"
 AR="p ar crvs"
 RANLIB=":"	# some systems still require `ranlib'
 
