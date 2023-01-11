@@ -28,11 +28,11 @@ W: adt {
 };
 
 # TODO theme support
-ROMAN: con "/fonts/hermit/regular/16/font";
-BOLD: con "/fonts/hermit/bold/16/font";
-ITALIC: con "/fonts/hermit/regularitalic/16/font";
-HEADING1: con "/fonts/hermit/bold/16/font";
-HEADING2: con "/fonts/hermit/bolditalic/16/font";
+ROMAN: con "/fonts/BQN386/12/font";
+BOLD: con "/fonts/BQN386/13/font";
+ITALIC: con "/fonts/BQN386/11/font";
+HEADING1: con "/fonts/BQN386/16/font";
+HEADING2: con "/fonts/BQN386/14/font";
 rfont, bfont, ifont, h1font, h2font: ref Font;
 
 GOATTR: con Parseman->ATTR_LAST << iota;
