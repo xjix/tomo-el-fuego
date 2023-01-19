@@ -876,17 +876,17 @@ fcinflate(fio: ref Sys->FileIO, fd: ref Sys->FD, gzip: int)
 pushssl(origfd: ref Sys->FD, addr: string): (ref Sys->FD, string)
 {
 	say("PUSHSSL");
+	f := sprint("fcn%d.%d", sys->pctl(0, nil), nfc++);
+	fio := sys->file2chan("#shttp", f);
+	if(fio == nil)
+		return (nil, sprint("file2chan: %r"));
+	#say("sslx context");
 	sslx := Context.new();
 	info := ref SSL3->Authinfo(ssl_suites, ssl_comprs, nil, 0, nil, nil, nil);
 	(err, vers) :=  sslx.client(origfd, addr, 3, info);
 	if(err != nil)
 		return (nil, err);
 	say(sprint("ssl connected version=%d", vers));
-
-	f := sprint("fcn%d.%d", sys->pctl(0, nil), nfc++);
-	fio := sys->file2chan("#shttp", f);
-	if(fio == nil)
-		return (nil, sprint("file2chan: %r"));
 	spawn fcssl(fio, sslx);
 	fd := sys->open(sprint("#shttp/%s", f), Sys->ORDWR);
 	if(fd == nil)
@@ -896,27 +896,27 @@ pushssl(origfd: ref Sys->FD, addr: string): (ref Sys->FD, string)
 
 fcssl(fio: ref Sys->FileIO, sslx: ref Context)
 {
-	#say("fcssl: new");
+	say("fcssl: new");
 	eof := 0;
 	for(;;) alt {
 	(nil, count, nil, rc) := <-fio.read =>
-		#say(sprint("fcssl: have read, count=%d", count));
+		say(sprint("fcssl: have read, count=%d", count));
 		if(rc == nil) {
-			#say("sslfc: rc == nil");
+			say("sslfc: rc == nil");
 			return;
 		}
 		if(eof) {
-			#say(sprint("sslfc: eof reading"));
+			say(sprint("sslfc: eof reading"));
 			rc <-= (array[0] of byte, nil);
 			continue;
 		}
 		n := sslx.read(d := array[count] of byte, len d);
 		if(n < 0) {
-			#say(sprint("sslfc: error: %r"));
+			say(sprint("sslfc: error: %r"));
 			rc <-= (nil, sprint("%r"));
 			return;
 		}else {
-			#say(sprint("sslfc: returning %d bytes", n));
+			say(sprint("sslfc: returning %d bytes", n));
 			rc <-= (d[:n], nil);
 		}
 		if(n == 0)
@@ -924,16 +924,16 @@ fcssl(fio: ref Sys->FileIO, sslx: ref Context)
 
 	(nil, d, nil, wc) := <-fio.write =>
 		if(wc == nil) {
-			#say("fcssl: wc == nil");
+			say("fcssl: wc == nil");
 			return;
 		}
 		if(sslx.write(d, len d) != len d) {
 			wc <-= (-1, sprint("%r"));
-			#say("fcssl: error writing");
+			say("fcssl: error writing");
 			return;
 		} else {
 			wc <-= (len d, nil);
-			#say("fcssl: written");
+			say("fcssl: written");
 		}
 	}
 }

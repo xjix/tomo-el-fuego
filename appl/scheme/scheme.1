@@ -13,8 +13,6 @@ to continuation.
 Finally, it behaves as r6rs, rather than r[45]rs in being
 case-sensitive.
 .SH EXTENSIONS
-There are two procedures unique to this implementation
-and not found in the r[456]rs standards.
 .TP 5
 (quit)
 This does the obvious of exiting the interpreter.
@@ -35,7 +33,7 @@ For example,
 .EX
 (define tkports (popen "tkcmd"))
 (define tkin (car tkports))
-(define tkout (cadr tkport))
+(define tkout (cadr tkports))
 (display "label .l -text {Hello World}\n" tkout)
 (display "pack .l\n" tkout)
 .EE
@@ -43,10 +41,80 @@ For example,
 .RS 0
 is a simple graphical version of everyone's favorite
 first program.
+
+.TP 5
+(<-=)
+
+.TP 5
+(=<-)
+
+.TP 5
+(alt)
+
+.TP 5
+(channel)
+
+.TP 5
+(close-inout-port)
+
+.TP 5
+(open-inout-file)
+
+.TP 5
+(open-input-string)
+
+.TP 5
+(readfile)
+
+.TP 5
+(readline)
+
+.TP 5
+(sleep)
+
+.TP 5
+(spawn)
+
+.SH CURRENT STATUS
+.TP 5
+r4rs
+all essential procedures except (call-with-current-continuation)
+
+.TP 5
+r5rs
+all non-optional features except
+(char-ready?)
+(call-with-current-continuation)
+(values)
+(call-with-values)
+(dynamic-wind)
+(define-syntax)
+(let-syntax)
+(letrec-syntax)
+(syntax-rules)
+
 .SH SOURCE
-.B /appl/scheme/*.b
+.B /appl/scheme/cell.b
+- core cell, pair, and environment routines.
+.br
+.B /appl/scheme/sform.b
+- functions that implement special forms.
+.br
+.B /appl/scheme/builtin.b
+- functions that implement built-in procedures.
+.br
+.B /appl/scheme/scheme.b
+- top-level REPL functions.
+.br
+.B extension.b
+- Inferno scheme extensions.
+.br
+.B /lib/scheme/library.scm
+- Some procedures implemented in scheme, rather than directly as built-in functions.
+.br
 .SH BUGS
-It does not, as yet, implment proper tail recursion.
-The (char-ready?) procedure is not likely to ever be
-implemented; there's not really a good way to do it
-in Inferno.
+The (char-ready?) procedure is not likely to ever be implemented; there's not really a good way to do it in Inferno.
+No complex numbers.
+No compiler.
+Error handling should be better.
+Proper tail calls only partial with little testing.

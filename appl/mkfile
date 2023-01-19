@@ -12,6 +12,7 @@ DIRS=\
 	lib\
 	math\
 #	mux\
+	scheme\
 	spree\
 	svc\
 	tiny\
