@@ -28,6 +28,7 @@ if {test -f /env/emuroot} {
 			@ $home/lib/tomorc
 		} {
 			env >[1=2]
+			svc/net
 			@ wm/wm wm/logon -u $"user
 		}
 	} {

@@ -82,9 +82,6 @@ if {test -f /env/emuroot} {
 # setup mntgen and system services
 mkdir -p /mnt
 mount {mntgen} /mnt
-{ndb/cs >/chan/wmstdout >[2=1]}
-{auth/factotum >/chan/wmstdout >[2=1]}
-{auth/feedkey >/chan/wmstdout >[2=1]}
 
 if {ftest -f $home/lib/wmsetup} {run $home/lib/wmsetup} {}
 
