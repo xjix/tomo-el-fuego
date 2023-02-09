@@ -1,0 +1,10 @@
+#!/bin/sh
+if `which fossil >/dev/null`; then
+	fossil info | 9 grep 'checkout' | 9 sed 's/checkout:[ ]+([^ ]+?) .+/\1/' | 9 cut -c1-12
+else
+	if `which metric-day >/dev/null`; then
+		echo "`metric-day`-dev"
+	else
+		echo "dev"
+	fi
+fi

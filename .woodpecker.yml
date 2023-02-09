@@ -4,9 +4,7 @@ pipeline:
     secrets: [ hp_ci_upload_key, hp_ci_upload_endpoint ]
     commands:
       - ./utils/tomo-dev.sh setup-ci $syshost
-      - ./utils/tomo-dev.sh build `pwd` $syshost $objtype
-      - rm -rf .git .hg
-      - ./utils/tomo-dev.sh upload-ci "tomo-$syshost-$objtype-${CI_COMMIT_BRANCH/master/trunk}-$CI_BUILD_STARTED-${CI_COMMIT_SHA:0:8}.zip"
+      - ./utils/tomo-dev.sh ci $syshost $objtype "tomo-$syshost-$objtype-${CI_COMMIT_BRANCH/master/trunk}-$CI_BUILD_STARTED-${CI_COMMIT_SHA:0:8}.zip"
 
 matrix:
   include:

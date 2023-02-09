@@ -69,6 +69,7 @@ case "${1}" in
 		dpkg --add-architecture i386
 		apt update >/dev/null
 		apt install -yy \
+			fossil:i386 \
 			curl:i386 \
 			binutils:i386 \
 			gcc:i386 \
@@ -144,13 +145,25 @@ case "${1}" in
 		# the ext feature so access can be managed in the usual way!
 		# https://fossil-scm.org/home/doc/trunk/www/serverext.wiki
 		artifact="$1"
-		artifact_path=`realpath $artifact`
-		set -xe
-		zip -r "$artifact" *
+		artifact_path="$2"
 		curl -Ssf -m 360 \
 			-X POST \
 			--data-binary "@$artifact_path" \
-			"https://$HP_CI_UPLOAD_KEY@$HP_CI_UPLOAD_ENDPOINT?n=$artifact"
+			"https://$HP_CI_UPLOAD_KEY@$CI_UPLOAD_ENDPOINT?n=$artifact"
+		;;
+	ci)
+		shift
+		set -e
+		syshost="$1"
+		objtype="$2"
+		$0 build `pwd` $syshost $objtype
+		artifact="${3:-tomo-$syshost-$objtype-`fossil-id`.zip}"
+		artifact_path=`realpath $artifact`
+		# exclude .fossil .git .hg
+		zip -r "$artifact" * -x '*.fossil' -x '.git/*' -x '.hg/*'
+		if [ ! -z $CI_UPLOAD_KEY ] && [ ! -z $CI_UPLOAD_ENDPOINT ]; then
+			$0 upload-ci $artifact $artifact_path
+		fi
 		;;
 	*)
 		echo "$0 [make-chroot|enter-chroot] MY_CHROOT"
