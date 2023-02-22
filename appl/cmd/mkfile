@@ -197,6 +197,7 @@ TARG=\
 	vacget.dis\
 	vacput.dis\
 	#vacsrv.dis\
+	vixenplumb.dis\
 	ventry.dis\
 	vcache.dis\
 	vtest.dis\

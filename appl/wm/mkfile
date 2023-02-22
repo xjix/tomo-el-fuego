@@ -65,11 +65,20 @@ TARG=\
 	unibrowse.dis\
 	view.dis\
 	vt.dis\
+	vixen.dis\
 	wish.dis\
 	wm.dis\
 	wmplay.dis\
 
 MODULES=\
+	vixen/buffers.b\
+	vixen/change.b\
+	vixen/cmd.b\
+	vixen/ex.b\
+	vixen/filter.b\
+	vixen/interp.b\
+	vixen/misc.b\
+	vixen/subs.b\
 	wmdeb.m\
 
 SYSMODULES=\
@@ -84,14 +93,17 @@ SYSMODULES=\
 	filepat.m\
 	html.m\
 	keyring.m\
+	keyboard.m\
 	man.m\
 	math.m\
 	mpeg.m\
 	newns.m\
+	names.m\
 	plumbmsg.m\
 	quicktime.m\
 	lists.m\
 	rand.m\
+	regex.m\
 	readdir.m\
 	riff.m\
 	security.m\
