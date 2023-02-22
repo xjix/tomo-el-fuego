@@ -5,7 +5,7 @@
 #    May you find forgiveness for yourself and forgive others.
 #    May you share freely, never taking more than you give.
 
-# <https://source.heropunch.luxe/System/9/inferno-find>
+# <https://git.ix.cyb.red/ar/inferno-find>
 # <https://github.com/mjl-/find>
 
 implement Find;
